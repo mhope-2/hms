@@ -10,10 +10,10 @@ import UserWithThatUsernameAlreadyExistsException from '../exceptions/auth/UserW
 import Controller from '../interfaces/controller.interface';
 import validationMiddleware from '../middleware/validation.middleware';
 import CreateUserDto from '../user/user.dto';
-import UserModel from '../models/user.model';
+import UserModel from '../models/rooms.model';
 import LogInDto from '../login/login.dto'
 import TokenData from '../interfaces/tokenData.interface'
-import UserInterface from '../interfaces/user.interface'
+import UserInterface from '../interfaces/rooms.interface'
 import DataStoredInToken from '../interfaces/dataStoredInToken.interface'
 const jwt = require('jsonwebtoken')
 

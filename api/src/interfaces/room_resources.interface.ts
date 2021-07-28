@@ -1,8 +1,8 @@
 
-interface roomResources{
+interface roomResourcesInterface{
     name: string,
     description: string
 }
 
 
-export default roomResources
+export default roomResourcesInterface

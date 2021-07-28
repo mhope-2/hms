@@ -1,5 +1,5 @@
 import * as mongoose from 'mongoose'
-import roomResources from '../interfaces/room_resources.interface'
+import roomResourcesInterface from '../interfaces/room_resources.interface'
 
 const RoomResourcesSchema = new mongoose.Schema({
 
@@ -10,6 +10,6 @@ const RoomResourcesSchema = new mongoose.Schema({
 {timestamps:true}
 )
 
-const RoomResourcesModel = mongoose.model<roomResources & mongoose.Document>('RoomResources', RoomResourcesSchema);
+const RoomResourcesModel = mongoose.model<roomResourcesInterface & mongoose.Document>('RoomResources', RoomResourcesSchema);
  
 export default RoomResourcesModel

@@ -1,4 +1,4 @@
-interface UserInterface {
+interface RoomsInterface {
     email: string,
     username: string,
     firstName: string,
@@ -7,4 +7,4 @@ interface UserInterface {
     role?: string     
   }
 
-export default UserInterface  
+export default RoomsInterface  
