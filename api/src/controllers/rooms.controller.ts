@@ -1,10 +1,10 @@
 const jwt = require('jsonwebtoken')
 import express from 'express'
 import Controller from '../interfaces/controller.interface'
-import PostInterface from '../interfaces/roomResources.interface'
+import roomInterface from '../interfaces/roomResources.interface'
 import RoomsModel from '../models/rooms.model'
 import HttpException from '../exceptions/http/HttpException'
-import PostNotFoundException from '../exceptions/post/PostNotFoundException' 
+import roomNotFoundException from '../exceptions/room/roomNotFoundException' 
 import roomsDto from '../dtos/rooms.dto'
 import validationMiddleware from '../middleware/validation.middleware'
 import authMiddleware from '../middleware/auth.middleware';
@@ -28,34 +28,34 @@ class RoomsController implements Controller {
     }
    
 
-    // list all posts
+    // list all rooms
     private roomsList = async (req:express.Request, res:express.Response) => {
         await this.room.find()
-        .then(posts => res.json(posts))
+        .then(rooms => res.json(rooms))
         .catch(err => res.status(400).json('Error: ' + err)) 
     } 
 
    
-    // add post
+    // add room
     private addRoom = async (req:express.Request, res:express.Response) => {
-      const addPostData : roomsDto = req.body
-      const newPost = new this.post(addPostData)
+      const addRoomData : roomsDto = req.body
+      const newRoom = new this.room(addRoomData)
       
-      const saveNewPost = await newPost.save()
-      .then(() => res.json({"Response":`Post ${addPostData.postTitle} added`}))
+      const saveNewroom = await newRoom.save()
+      .then(() => res.json({"Response":`room with number ${addRoomData.roomNumber} added`}))
       .catch(err => res.status(400).json('Error: ' + err));
   }
 
 
-  // Get post Info by Id
+  // Get room Info by Id
   private findRoomById = async (req:express.Request, res:express.Response, next:express.NextFunction) => {
 
-    this.post.findById(req.params.id)
-    .then(post => {
-      if (post)
-        res.json(post)
+    this.room.findById(req.params.id)
+    .then(room => {
+      if (room)
+        res.json(room)
       else {
-        next(new HttpException(404, 'Post not found'));
+        next(new HttpException(404, 'Room not found'));
       }
     })
   }
@@ -65,14 +65,14 @@ class RoomsController implements Controller {
    private updateRoomById = async (req:express.Request, res:express.Response, next:express.NextFunction) => {
 
     const id = req.params.id
-    const updatePostData: PostInterface = req.body
+    const updateRoomData: roomInterface = req.body
 
-    this.post.findByIdAndUpdate(id, updatePostData, {new: true})
-    .then(post => {
-      if (post)
-        res.json({"Response":`Post with id ${id} updated`})
+    this.room.findByIdAndUpdate(id, updateRoomData, {new: true})
+    .then(room => {
+      if (room)
+        res.json({"Response":`room with id ${id} updated`})
       else{
-        next(new PostNotFoundException(id))
+        next(new roomNotFoundException(id))
       }
     }    
 
@@ -82,12 +82,12 @@ class RoomsController implements Controller {
     // Delete by id
     private deleteRoomById = async (req:express.Request, res:express.Response, next:express.NextFunction) => {
         const id = req.body.id
-        this.post.findByIdAndDelete(id)
+        this.room.findByIdAndDelete(id)
         .then(successResponse => {
           if (successResponse) {
-              res.json({"Response":`Post with id ${id} deleted successfully`});
+              res.json({"Response":`Room with id ${id} deleted successfully`});
           } else {
-            next(new PostNotFoundException(id));
+            next(new roomNotFoundException(id));
           }
         })
     }
