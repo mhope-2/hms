@@ -30,8 +30,8 @@ class AuthenticationController implements Controller {
 
         this.router.get(`${this.path}/users`, this.userList);
         this.router.get(`${this.path}/:id`, this.findUserById);
-        this.router.post(`${this.path}/register`, validationMiddleware(CreateUserDto), this.registration);
-        this.router.post(`${this.path}/login`, validationMiddleware(LogInDto), this.loggingIn);
+        this.router.post(`${this.path}/user/register`, validationMiddleware(CreateUserDto), this.registration);
+        this.router.post(`${this.path}/user/login`, validationMiddleware(LogInDto), this.loggingIn);
       }
 
 

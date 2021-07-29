@@ -1,11 +1,11 @@
 import *  as dotenv from 'dotenv'
 import validateEnv from './utils/validateEnv'
-import PostController from './controllers/post.controller'
 import AuthenticationController from './controllers/authentication.controller'
-const multer = require("multer")
-const path = require("path")
-import * as express from 'express';
 import App from './app'
+
+import RoomsController from './controllers/rooms.controller'
+import RoomResourcesController from './controllers/roomResources.controller'
+import BookingsController from './controllers/bookings.controller'
 
 // get env variables
 dotenv.config({
@@ -19,7 +19,9 @@ validateEnv();
 const app = new App(
   [
     new AuthenticationController(),
-    new PostController()
+    new RoomsController(),
+    new RoomResourcesController(),
+    new BookingsController()
   ],
 );
 
