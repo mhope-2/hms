@@ -13,7 +13,7 @@ import authMiddleware from '../middleware/auth.middleware';
 class RoomsController implements Controller {
     public path = '/rooms';
     public router = express.Router();
-    private post = RoomsModel;
+    private room = RoomsModel;
    
     constructor() {
       this.initializeRoutes()
@@ -30,7 +30,7 @@ class RoomsController implements Controller {
 
     // list all posts
     private roomsList = async (req:express.Request, res:express.Response) => {
-        await this.post.find()
+        await this.room.find()
         .then(posts => res.json(posts))
         .catch(err => res.status(400).json('Error: ' + err)) 
     } 
