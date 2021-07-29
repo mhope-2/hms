@@ -60,7 +60,7 @@ class BookingsController implements Controller {
   }
 
 
-  // Update Exercide
+  // Update Booking
    private updateBookingById = async (req:express.Request, res:express.Response, next:express.NextFunction) => {
 
     const id = req.params.id
