@@ -11,6 +11,6 @@ const roleSchema = new mongoose.Schema({
 {timestamps:true}
 )
 
-const rolesModel = mongoose.model<rolesInterface & mongoose.Document>('Roles', roleSchema);
+const RolesModel = mongoose.model<rolesInterface & mongoose.Document>('Roles', roleSchema);
  
-export default rolesModel
+export default RolesModel

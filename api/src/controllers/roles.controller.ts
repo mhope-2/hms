@@ -1,54 +1,54 @@
 import express from 'express'
 import Controller from '../interfaces/controller.interface'
 import roomInterface from '../interfaces/roomResources.interface'
-import RoomsModel from '../models/rooms.model'
+import RolesModel from '../models/roles.model'
 import HttpException from '../exceptions/http/HttpException'
 import RoomNotFoundException from '../exceptions/room/RoomNotFoundException' 
-import roomsDto from '../dtos/roles.dto'
+import RolesDto from '../dtos/roles.dto'
 import validationMiddleware from '../middleware/validation.middleware'
 import authMiddleware from '../middleware/auth.middleware';
 
 
 class RoomsController implements Controller {
-    public path = '/rooms';
+    public path = '/roles';
     public router = express.Router();
-    private room = RoomsModel;
+    private role = RolesModel;
    
     constructor() {
       this.initializeRoutes()
     }
 
     private initializeRoutes() {
-      this.router.get(this.path, this.roomsList);
-      this.router.get(`${this.path}/:id`, this.findRoomById);
-      this.router.post(`${this.path}/add`, authMiddleware, validationMiddleware(roomsDto), this.addRoom);
-      this.router.patch(`${this.path}/update/:id`, authMiddleware, this.updateRoomById);
-      this.router.delete(`${this.path}/delete`, authMiddleware, this.deleteRoomById);
+      this.router.get(this.path, this.rolesList);
+      this.router.get(`${this.path}/:id`, this.findRoleById);
+      this.router.post(`${this.path}/add`, authMiddleware, validationMiddleware(RolesDto), this.addRole);
+      this.router.patch(`${this.path}/update/:id`, authMiddleware, this.updateRoleById);
+      this.router.delete(`${this.path}/delete`, authMiddleware, this.deleteRoleById);
     }
 
-    // list all rooms
-    private roomsList = async (req:express.Request, res:express.Response) => {
-        await this.room.find()
-        .then(rooms => res.json(rooms))
+    // list all roles
+    private rolesList = async (req:express.Request, res:express.Response) => {
+        await this.role.find()
+        .then(roles => res.json(roles))
         .catch(err => res.status(400).json('Error: ' + err)) 
     } 
 
    
     // add room
-    private addRoom = async (req:express.Request, res:express.Response) => {
-      const addRoomData : roomsDto = req.body
-      const newRoom = new this.room(addRoomData)
+    private addRole = async (req:express.Request, res:express.Response) => {
+      const addRoleData : RolesDto = req.body
+      const newRole = new this.role(addRoleData)
       
-      const saveNewroom = await newRoom.save()
-      .then(() => res.json({"Response":`room with number ${addRoomData.roomNumber} added`}))
+      const saveNewroom = await newRole.save()
+      .then(() => res.json({"Response":`room with number ${addRoleData.role} added`}))
       .catch(err => res.status(400).json('Error: ' + err));
   }
 
 
   // Get room Info by Id
-  private findRoomById = async (req:express.Request, res:express.Response, next:express.NextFunction) => {
+  private findRoleById = async (req:express.Request, res:express.Response, next:express.NextFunction) => {
 
-    this.room.findById(req.params.id)
+    this.role.findById(req.params.id)
     .then(room => {
       if (room)
         res.json(room)
@@ -60,12 +60,12 @@ class RoomsController implements Controller {
 
 
   // Update Exercide
-   private updateRoomById = async (req:express.Request, res:express.Response, next:express.NextFunction) => {
+   private updateRoleById = async (req:express.Request, res:express.Response, next:express.NextFunction) => {
 
     const id = req.params.id
     const updateRoomData: roomInterface = req.body
 
-    this.room.findByIdAndUpdate(id, updateRoomData, {new: true})
+    this.role.findByIdAndUpdate(id, updateRoomData, {new: true})
     .then(room => {
       if (room)
         res.json({"Response":`room with id ${id} updated`})
@@ -78,9 +78,9 @@ class RoomsController implements Controller {
 
 
     // Delete by id
-    private deleteRoomById = async (req:express.Request, res:express.Response, next:express.NextFunction) => {
+    private deleteRoleById = async (req:express.Request, res:express.Response, next:express.NextFunction) => {
         const id = req.body.id
-        this.room.findByIdAndDelete(id)
+        this.role.findByIdAndDelete(id)
         .then(successResponse => {
           if (successResponse) {
               res.json({"Response":`Room with id ${id} deleted successfully`});
