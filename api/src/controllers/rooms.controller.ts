@@ -10,7 +10,7 @@ import validationMiddleware from '../middleware/validation.middleware'
 import authMiddleware from '../middleware/auth.middleware';
 
 
-class PostController implements Controller {
+class RoomsController implements Controller {
     public path = '/rooms';
     public router = express.Router();
     private post = RoomsModel;
@@ -19,8 +19,6 @@ class PostController implements Controller {
       this.initializeRoutes()
     }
 
-
-   
     private initializeRoutes() {
       this.router.get(this.path, this.roomsList);
       this.router.get(`${this.path}/:id`, this.findRoomById);
@@ -96,4 +94,4 @@ class PostController implements Controller {
   // class end
   }
 
-export default PostController
+export default RoomsController
