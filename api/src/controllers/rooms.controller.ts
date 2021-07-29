@@ -1,4 +1,3 @@
-const jwt = require('jsonwebtoken')
 import express from 'express'
 import Controller from '../interfaces/controller.interface'
 import roomInterface from '../interfaces/roomResources.interface'
