@@ -2,16 +2,11 @@ import { IsOptional, IsString, ValidateNested } from 'class-validator';
 
 class RolesDto {
   @IsString()
-  public roomNumber: string
+  public role: string
 
   @IsString()
-  public floor: string
+  public description: string
 
-  @IsString()
-  public resources: Object
-
-  @IsString()
-  public price: Number
 }
 
 export default RolesDto;
