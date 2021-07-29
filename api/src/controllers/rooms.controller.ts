@@ -2,10 +2,10 @@ const jwt = require('jsonwebtoken')
 import express from 'express'
 import Controller from '../interfaces/controller.interface'
 import PostInterface from '../interfaces/roomResources.interface'
-import PostModel from '../models/roomResources.model'
+import RoomsModel from '../models/rooms.model'
 import HttpException from '../exceptions/http/HttpException'
 import PostNotFoundException from '../exceptions/post/PostNotFoundException' 
-import CreatePostDto from '../dtos/roomResources.dto'
+import roomsDto from '../dtos/rooms.dto'
 import validationMiddleware from '../middleware/validation.middleware'
 import authMiddleware from '../middleware/auth.middleware';
 
@@ -13,7 +13,7 @@ import authMiddleware from '../middleware/auth.middleware';
 class PostController implements Controller {
     public path = '/rooms';
     public router = express.Router();
-    private post = PostModel;
+    private post = RoomsModel;
    
     constructor() {
       this.initializeRoutes()
@@ -22,16 +22,16 @@ class PostController implements Controller {
 
    
     private initializeRoutes() {
-      this.router.get(this.path, this.postList);
-      this.router.get(`${this.path}/:id`, this.findPostById);
-      this.router.post(`${this.path}/add`, authMiddleware, validationMiddleware(CreatePostDto), this.addPost);
-      this.router.patch(`${this.path}/update/:id`, authMiddleware, this.updatePostById);
-      this.router.delete(`${this.path}/delete`, authMiddleware, this.deletePostById);
+      this.router.get(this.path, this.roomsList);
+      this.router.get(`${this.path}/:id`, this.findRoomById);
+      this.router.post(`${this.path}/add`, authMiddleware, validationMiddleware(roomsDto), this.addRoom);
+      this.router.patch(`${this.path}/update/:id`, authMiddleware, this.updateRoomById);
+      this.router.delete(`${this.path}/delete`, authMiddleware, this.deleteRoomById);
     }
    
 
     // list all posts
-    private postList = async (req:express.Request, res:express.Response) => {
+    private roomsList = async (req:express.Request, res:express.Response) => {
         await this.post.find()
         .then(posts => res.json(posts))
         .catch(err => res.status(400).json('Error: ' + err)) 
@@ -39,8 +39,8 @@ class PostController implements Controller {
 
    
     // add post
-    private addPost = async (req:express.Request, res:express.Response) => {
-      const addPostData : CreatePostDto = req.body
+    private addRoom = async (req:express.Request, res:express.Response) => {
+      const addPostData : roomsDto = req.body
       const newPost = new this.post(addPostData)
       
       const saveNewPost = await newPost.save()
@@ -50,7 +50,7 @@ class PostController implements Controller {
 
 
   // Get post Info by Id
-  private findPostById = async (req:express.Request, res:express.Response, next:express.NextFunction) => {
+  private findRoomById = async (req:express.Request, res:express.Response, next:express.NextFunction) => {
 
     this.post.findById(req.params.id)
     .then(post => {
@@ -64,7 +64,7 @@ class PostController implements Controller {
 
 
   // Update Exercide
-   private updatePostById = async (req:express.Request, res:express.Response, next:express.NextFunction) => {
+   private updateRoomById = async (req:express.Request, res:express.Response, next:express.NextFunction) => {
 
     const id = req.params.id
     const updatePostData: PostInterface = req.body
@@ -82,7 +82,7 @@ class PostController implements Controller {
 
 
     // Delete by id
-    private deletePostById = async (req:express.Request, res:express.Response, next:express.NextFunction) => {
+    private deleteRoomById = async (req:express.Request, res:express.Response, next:express.NextFunction) => {
         const id = req.body.id
         this.post.findByIdAndDelete(id)
         .then(successResponse => {
