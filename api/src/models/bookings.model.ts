@@ -1,11 +1,13 @@
 import * as mongoose from 'mongoose'
-import UserInterface from '../interfaces/rooms.interface';
+import BookingsInterface from '../interfaces/bookings.interface';
 var Schema = mongoose.Schema;
 
-const RoomsSchema = new mongoose.Schema({
+const BookingsSchema = new mongoose.Schema({
 
-    room_number: { type: String, required: true, unique:true },
-    floor: { type: Number, required: true },
+    booking_code: { type: String, required: true, unique:true },
+    room:[
+        {type: Schema.Types.ObjectId, ref: 'Rooms'}
+      ],
     resources:[
       {type: Schema.Types.ObjectId, ref: 'RoomResources'}
     ]       
@@ -13,6 +15,6 @@ const RoomsSchema = new mongoose.Schema({
   {timestamps:true}
 )
 
-const RoomsModel = mongoose.model<UserInterface & mongoose.Document>('Rooms', RoomsSchema)
+const BookingsModel = mongoose.model<BookingsInterface & mongoose.Document>('Bookings', BookingsSchema)
  
-export default RoomsModel 
+export default BookingsModel

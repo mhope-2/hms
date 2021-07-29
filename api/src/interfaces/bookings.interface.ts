@@ -1,10 +1,9 @@
 
-interface RoomsInterface {
+interface BookingsInterface {
     room_number: string,
     floor: Number,
     resources: Object,
-    lastName: string,
     price: Number,
   }
 
-export default RoomsInterface  
+export default BookingsInterface  
