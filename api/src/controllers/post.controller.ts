@@ -4,7 +4,7 @@ import Controller from '../interfaces/controller.interface'
 import PostInterface from '../interfaces/roomResources.interface'
 import PostModel from '../models/roomResources.model'
 import HttpException from '../exceptions/http/HttpException'
-import PostNotFoundException from '../exceptions/post/PostNotFoundException' 
+import PostNotFoundException from '../exceptions/room/RoomNotFoundException' 
 import CreatePostDto from '../dtos/roomResources.dto'
 import validationMiddleware from '../middleware/validation.middleware'
 import authMiddleware from '../middleware/auth.middleware';

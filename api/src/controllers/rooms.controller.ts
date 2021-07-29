@@ -4,7 +4,7 @@ import Controller from '../interfaces/controller.interface'
 import roomInterface from '../interfaces/roomResources.interface'
 import RoomsModel from '../models/rooms.model'
 import HttpException from '../exceptions/http/HttpException'
-import roomNotFoundException from '../exceptions/room/roomNotFoundException' 
+import RoomNotFoundException from '../exceptions/room/RoomNotFoundException' 
 import roomsDto from '../dtos/rooms.dto'
 import validationMiddleware from '../middleware/validation.middleware'
 import authMiddleware from '../middleware/auth.middleware';
@@ -72,7 +72,7 @@ class RoomsController implements Controller {
       if (room)
         res.json({"Response":`room with id ${id} updated`})
       else{
-        next(new roomNotFoundException(id))
+        next(new RoomNotFoundException(id))
       }
     }    
 
@@ -87,7 +87,7 @@ class RoomsController implements Controller {
           if (successResponse) {
               res.json({"Response":`Room with id ${id} deleted successfully`});
           } else {
-            next(new roomNotFoundException(id));
+            next(new RoomNotFoundException(id));
           }
         })
     }

@@ -1,9 +1,9 @@
 import HttpException from "../http/HttpException";
  
-class PostNotFoundException extends HttpException {
+class RoomNotFoundException extends HttpException {
   constructor(id: string) {
     super(404, `Post with id ${id} not found`);
   }
 }
  
-export default PostNotFoundException;
+export default RoomNotFoundException;
