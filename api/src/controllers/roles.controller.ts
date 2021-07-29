@@ -25,7 +25,6 @@ class RoomsController implements Controller {
       this.router.patch(`${this.path}/update/:id`, authMiddleware, this.updateRoomById);
       this.router.delete(`${this.path}/delete`, authMiddleware, this.deleteRoomById);
     }
-   
 
     // list all rooms
     private roomsList = async (req:express.Request, res:express.Response) => {
