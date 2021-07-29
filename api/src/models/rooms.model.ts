@@ -4,11 +4,12 @@ var Schema = mongoose.Schema;
 
 const RoomsSchema = new mongoose.Schema({
 
-    room_number: { type: String, required: true, unique:true },
+    roomNumber: { type: String, required: true, unique:true },
     floor: { type: Number, required: true },
     resources:[
       {type: Schema.Types.ObjectId, ref: 'RoomResources'}
-    ]       
+    ],
+    price: { type: Number, required: true}
 },
   {timestamps:true}
 )
