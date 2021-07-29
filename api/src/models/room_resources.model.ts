@@ -3,7 +3,7 @@ import roomResourcesInterface from '../interfaces/room_resources.interface'
 
 const RoomResourcesSchema = new mongoose.Schema({
 
-    name:{type: String, required: true},
+    name:{type: String, required: true, unique:true},
     description:{type: String, required: true},
 
 },

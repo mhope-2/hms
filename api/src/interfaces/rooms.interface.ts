@@ -1,10 +1,10 @@
+
 interface RoomsInterface {
-    email: string,
-    username: string,
-    firstName: string,
+    room_no: string,
+    floor: Number,
+    resources: Object,
     lastName: string,
-    password: string,
-    role?: string     
+    price: Number,
   }
 
 export default RoomsInterface  
