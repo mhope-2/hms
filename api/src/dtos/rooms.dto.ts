@@ -1,6 +1,6 @@
 import { IsOptional, IsString, ValidateNested } from 'class-validator';
 
-class CreateUserDto {
+class roomsDto {
   @IsString()
   public roomNumber: string
 
@@ -8,9 +8,8 @@ class CreateUserDto {
   public floor: string
 
   @IsString()
-  public resources: string
+  public price: Object
 }
 
-  price: { type: Number, required: true}
 
-export default CreateUserDto;
+export default roomsDto;
