@@ -3,7 +3,7 @@ import Controller from '../interfaces/controller.interface'
 import PostInterface from '../interfaces/roomResources.interface'
 import RoomResourcesModel from '../models/roomResources.model'
 import HttpException from '../exceptions/http/HttpException'
-import RoomResourceNotFoundException from '../exceptions/roomResources/RoomResourceNotFoundException' 
+import BookingNotFoundException from '../exceptions/bookings/BookingNotFoundException' 
 import roomResourcesDto from '../dtos/roomResources.dto'
 import validationMiddleware from '../middleware/validation.middleware'
 import authMiddleware from '../middleware/auth.middleware';
@@ -71,7 +71,7 @@ class BookingsController implements Controller {
       if (booking)
         res.json({"Response":`Room Resource with id ${id} updated`})
       else{
-        next(new RoomResourceNotFoundException(id))
+        next(new BookingNotFoundException(id))
       }
     }    
 
@@ -86,7 +86,7 @@ class BookingsController implements Controller {
           if (successResponse) {
               res.json({"Response":`Room Resource with id ${id} deleted successfully`});
           } else {
-            next(new RoomResourceNotFoundException(id));
+            next(new BookingNotFoundException(id));
           }
         })
     }
