@@ -1,6 +1,6 @@
 
 interface RoomsInterface {
-    room_number: string,
+    roomNumber: string,
     floor: Number,
     resources: Object,
     lastName: string,
