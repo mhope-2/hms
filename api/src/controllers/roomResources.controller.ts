@@ -35,7 +35,7 @@ class RoomResourcesController implements Controller {
     } 
 
    
-    // add post
+    // add Room Resource
     private addRoomsResource = async (req:express.Request, res:express.Response) => {
       const addPostData : roomResourcesDto = req.body
       const newPost = new this.roomResource(addPostData)
@@ -46,7 +46,7 @@ class RoomResourcesController implements Controller {
   }
 
 
-  // Get post Info by Id
+  // Get Room Resource Details by Id
   private findRoomResourceById = async (req:express.Request, res:express.Response, next:express.NextFunction) => {
 
     this.roomResource.findById(req.params.id)
@@ -60,7 +60,7 @@ class RoomResourcesController implements Controller {
   }
 
 
-  // Update Exercide
+  // Update Room Resource
    private updateRoomResourceById = async (req:express.Request, res:express.Response, next:express.NextFunction) => {
 
     const id = req.params.id
