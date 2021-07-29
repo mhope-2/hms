@@ -23,17 +23,5 @@ const app = new App(
   ],
 );
 
-const storage = multer.diskStorage({
-  destination: "./public/",
-  filename: (req: express.Request, file, cb : any) => {
-     cb(null + path.extname(file.originalname) + "_" + Date.now() );
-  }
-});
-
-const upload = multer({
-  storage: storage,
-  limits:{fileSize: 1000000},
-}).single("uploads");
-
 
 app.listen();
