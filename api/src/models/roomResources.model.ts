@@ -1,5 +1,5 @@
 import * as mongoose from 'mongoose'
-import roomResourcesInterface from '../interfaces/room_resources.interface'
+import roomResourcesInterface from '../interfaces/roomResources.interface'
 
 const RoomResourcesSchema = new mongoose.Schema({
 

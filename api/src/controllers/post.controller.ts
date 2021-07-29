@@ -1,11 +1,11 @@
 const jwt = require('jsonwebtoken')
 import express from 'express'
 import Controller from '../interfaces/controller.interface'
-import PostInterface from '../interfaces/room_resources.interface'
-import PostModel from '../models/room_resources.model'
+import PostInterface from '../interfaces/roomResources.interface'
+import PostModel from '../models/roomResources.model'
 import HttpException from '../exceptions/http/HttpException'
 import PostNotFoundException from '../exceptions/post/PostNotFoundException' 
-import CreatePostDto from '../post/post.dto'
+import CreatePostDto from '../dtos/roomResources.dto'
 import validationMiddleware from '../middleware/validation.middleware'
 import authMiddleware from '../middleware/auth.middleware';
 

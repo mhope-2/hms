@@ -9,7 +9,7 @@ import UserNotFoundException from '../exceptions/auth/UserNotFoundException'
 import UserWithThatUsernameAlreadyExistsException from '../exceptions/auth/UserWithThatUsernameAlreadyExistsException'
 import Controller from '../interfaces/controller.interface';
 import validationMiddleware from '../middleware/validation.middleware';
-import CreateUserDto from '../user/user.dto';
+import CreateUserDto from '../dtos/rooms.dto';
 import UserModel from '../models/rooms.model';
 import LogInDto from '../login/login.dto'
 import TokenData from '../interfaces/tokenData.interface'
