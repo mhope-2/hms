@@ -1,6 +1,6 @@
 import * as mongoose from 'mongoose'
 import UserInterface from '../interfaces/rooms.interface';
-var Schema = mongoose.Schema;
+let Schema = mongoose.Schema;
 
 const RoomsSchema = new mongoose.Schema({
 

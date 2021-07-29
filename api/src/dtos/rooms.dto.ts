@@ -8,8 +8,10 @@ class roomsDto {
   public floor: string
 
   @IsString()
-  public price: Object
-}
+  public resources: Object
 
+  @IsString()
+  public price: Number
+}
 
 export default roomsDto;
