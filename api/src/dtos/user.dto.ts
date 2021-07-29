@@ -24,7 +24,7 @@ class CreateUserDto {
 
   @IsOptional()
   @IsString()
-  public role?: string;
+  public role: string;
 }
 
 
