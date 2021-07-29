@@ -10,9 +10,9 @@ import authMiddleware from '../middleware/auth.middleware';
 
 
 class RoomResourcesController implements Controller {
-    public path = '/posts';
+    public path = '/room/resources';
     public router = express.Router();
-    private post = RoomResourcesModel;
+    private roomResource = RoomResourcesModel;
    
     constructor() {
       this.initializeRoutes()
@@ -22,14 +22,14 @@ class RoomResourcesController implements Controller {
       this.router.get(this.path, this.roomsResourcesList);
       this.router.get(`${this.path}/:id`, this.findRoomResourceById);
       this.router.post(`${this.path}/add`, authMiddleware, validationMiddleware(roomResourcesDto), this.addRoomsResource);
-      this.router.patch(`${this.path}/update/:id`, authMiddleware, this.updatePostById);
-      this.router.delete(`${this.path}/delete`, authMiddleware, this.deletePostById);
+      this.router.patch(`${this.path}/update/:id`, authMiddleware, this.updateRoomResourceById);
+      this.router.delete(`${this.path}/delete`, authMiddleware, this.deleteRoomResourceById);
     }
    
 
     // list all room resources
     private roomsResourcesList = async (req:express.Request, res:express.Response) => {
-        await this.post.find()
+        await this.roomResource.find()
         .then(posts => res.json(posts))
         .catch(err => res.status(400).json('Error: ' + err)) 
     } 
@@ -38,10 +38,10 @@ class RoomResourcesController implements Controller {
     // add post
     private addRoomsResource = async (req:express.Request, res:express.Response) => {
       const addPostData : roomResourcesDto = req.body
-      const newPost = new this.post(addPostData)
+      const newPost = new this.roomResource(addPostData)
       
       const saveNewPost = await newPost.save()
-      .then(() => res.json({"Response":`Post ${addPostData.postTitle} added`}))
+      .then(() => res.json({"Response":`Post ${addPostData.name} added`}))
       .catch(err => res.status(400).json('Error: ' + err));
   }
 
@@ -49,27 +49,27 @@ class RoomResourcesController implements Controller {
   // Get post Info by Id
   private findRoomResourceById = async (req:express.Request, res:express.Response, next:express.NextFunction) => {
 
-    this.post.findById(req.params.id)
-    .then(post => {
-      if (post)
-        res.json(post)
+    this.roomResource.findById(req.params.id)
+    .then(roomResource => {
+      if (roomResource)
+        res.json(roomResource)
       else {
-        next(new HttpException(404, 'Post not found'));
+        next(new HttpException(404, 'RoomResource not found'));
       }
     })
   }
 
 
   // Update Exercide
-   private updatePostById = async (req:express.Request, res:express.Response, next:express.NextFunction) => {
+   private updateRoomResourceById = async (req:express.Request, res:express.Response, next:express.NextFunction) => {
 
     const id = req.params.id
     const updatePostData: PostInterface = req.body
 
-    this.post.findByIdAndUpdate(id, updatePostData, {new: true})
-    .then(post => {
-      if (post)
-        res.json({"Response":`Post with id ${id} updated`})
+    this.roomResource.findByIdAndUpdate(id, updatePostData, {new: true})
+    .then(roomResource => {
+      if (roomResource)
+        res.json({"Response":`Room Resource with id ${id} updated`})
       else{
         next(new RoomResourceNotFoundException(id))
       }
@@ -79,12 +79,12 @@ class RoomResourcesController implements Controller {
 
 
     // Delete by id
-    private deletePostById = async (req:express.Request, res:express.Response, next:express.NextFunction) => {
+    private deleteRoomResourceById = async (req:express.Request, res:express.Response, next:express.NextFunction) => {
         const id = req.body.id
-        this.post.findByIdAndDelete(id)
+        this.roomResource.findByIdAndDelete(id)
         .then(successResponse => {
           if (successResponse) {
-              res.json({"Response":`Post with id ${id} deleted successfully`});
+              res.json({"Response":`Room Resource with id ${id} deleted successfully`});
           } else {
             next(new RoomResourceNotFoundException(id));
           }
@@ -93,4 +93,4 @@ class RoomResourcesController implements Controller {
   // class end
   }
 
-export default RoomsResourcesController
+export default RoomResourcesController
