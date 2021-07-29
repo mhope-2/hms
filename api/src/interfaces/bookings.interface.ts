@@ -1,5 +1,5 @@
 
-interface BookingsInterface {
+interface BookingInterface {
     bookingCode: string,
     roomId: Object,
     price: Number,
@@ -7,4 +7,4 @@ interface BookingsInterface {
     userEmail: string
   }
 
-export default BookingsInterface
+export default BookingInterface

@@ -1,6 +1,6 @@
 import express from 'express'
 import Controller from '../interfaces/controller.interface'
-import PostInterface from '../interfaces/bookings.interface'
+import BookingInterface from '../interfaces/bookings.interface'
 import BookingsModel from '../models/bookings.model'
 import HttpException from '../exceptions/http/HttpException'
 import BookingNotFoundException from '../exceptions/bookings/BookingNotFoundException' 
@@ -10,7 +10,7 @@ import authMiddleware from '../middleware/auth.middleware';
 
 
 class BookingsController implements Controller {
-    public path = '/room/resources';
+    public path = '/bookings';
     public router = express.Router();
     private bookings = BookingsModel;
    
@@ -35,18 +35,18 @@ class BookingsController implements Controller {
     } 
 
    
-    // add post
+    // add Booking
     private addBooking = async (req:express.Request, res:express.Response) => {
-      const addPostData : BookingsDto = req.body
-      const newPost = new this.bookings(addPostData)
+      const addBookingData : BookingsDto = req.body
+      const newPost = new this.bookings(addBookingData)
       
-      const saveNewPost = await newPost.save()
-      .then(() => res.json({"Response":`Post ${addPostData.name} added`}))
+      const saveNewBooking = await newPost.save()
+      .then(() => res.json({"Response":`Booking ${addBookingData.bookingCode} added`}))
       .catch(err => res.status(400).json('Error: ' + err));
   }
 
 
-  // Get post Info by Id
+  // Get Booking Info by Id
   private findBookingById = async (req:express.Request, res:express.Response, next:express.NextFunction) => {
 
     this.bookings.findById(req.params.id)
@@ -64,9 +64,9 @@ class BookingsController implements Controller {
    private updateBookingById = async (req:express.Request, res:express.Response, next:express.NextFunction) => {
 
     const id = req.params.id
-    const updatePostData: PostInterface = req.body
+    const updateBookingData: BookingInterface = req.body
 
-    this.bookings.findByIdAndUpdate(id, updatePostData, {new: true})
+    this.bookings.findByIdAndUpdate(id, updateBookingData, {new: true})
     .then(booking => {
       if (booking)
         res.json({"Response":`Booking with id ${id} updated`})
