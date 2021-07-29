@@ -1,6 +1,6 @@
 import { IsString } from 'class-validator';
  
-class roomResourcesDto {
+class RoomResourcesDto {
 
     public constructor(){}
 
@@ -12,4 +12,4 @@ class roomResourcesDto {
 
 }
  
-export default roomResourcesDto;
+export default RoomResourcesDto;

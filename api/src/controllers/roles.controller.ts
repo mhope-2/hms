@@ -4,7 +4,7 @@ import roomInterface from '../interfaces/roomResources.interface'
 import RoomsModel from '../models/rooms.model'
 import HttpException from '../exceptions/http/HttpException'
 import RoomNotFoundException from '../exceptions/room/RoomNotFoundException' 
-import roomsDto from '../dtos/rooms.dto'
+import roomsDto from '../dtos/roles.dto'
 import validationMiddleware from '../middleware/validation.middleware'
 import authMiddleware from '../middleware/auth.middleware';
 

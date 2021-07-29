@@ -4,7 +4,7 @@ import PostInterface from '../interfaces/roomResources.interface'
 import RoomResourcesModel from '../models/roomResources.model'
 import HttpException from '../exceptions/http/HttpException'
 import RoomResourceNotFoundException from '../exceptions/roomResources/RoomResourceNotFoundException' 
-import roomResourcesDto from '../dtos/roomResources.dto'
+import RoomResourcesDto from '../dtos/roomResources.dto'
 import validationMiddleware from '../middleware/validation.middleware'
 import authMiddleware from '../middleware/auth.middleware';
 
@@ -21,7 +21,7 @@ class RoomResourcesController implements Controller {
     private initializeRoutes() {
       this.router.get(this.path, this.roomsResourcesList);
       this.router.get(`${this.path}/:id`, this.findRoomResourceById);
-      this.router.post(`${this.path}/add`, authMiddleware, validationMiddleware(roomResourcesDto), this.addRoomsResource);
+      this.router.post(`${this.path}/add`, authMiddleware, validationMiddleware(RoomResourcesDto), this.addRoomsResource);
       this.router.patch(`${this.path}/update/:id`, authMiddleware, this.updateRoomResourceById);
       this.router.delete(`${this.path}/delete`, authMiddleware, this.deleteRoomResourceById);
     }
@@ -37,7 +37,7 @@ class RoomResourcesController implements Controller {
    
     // add Room Resource
     private addRoomsResource = async (req:express.Request, res:express.Response) => {
-      const addPostData : roomResourcesDto = req.body
+      const addPostData : RoomResourcesDto = req.body
       const newPost = new this.roomResource(addPostData)
       
       const saveNewPost = await newPost.save()

@@ -1,6 +1,6 @@
 import { IsOptional, IsString, ValidateNested } from 'class-validator';
 
-class RoomsDto {
+class RolesDto {
   @IsString()
   public roomNumber: string
 
@@ -14,4 +14,4 @@ class RoomsDto {
   public price: Number
 }
 
-export default RoomsDto;
+export default RolesDto;
