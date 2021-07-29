@@ -26,6 +26,6 @@ const BookingsSchema = new mongoose.Schema({
   {timestamps:true}
 )
 
-const BookingsModel = mongoose.model<BookingsInterface & mongoose.Document>('Bookings', BookingsSchema)
+const BookingModel = mongoose.model<BookingsInterface & mongoose.Document>('Bookings', BookingsSchema)
  
-export default BookingsModel
+export default BookingModel

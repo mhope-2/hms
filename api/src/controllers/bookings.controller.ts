@@ -1,7 +1,7 @@
 import express from 'express'
 import Controller from '../interfaces/controller.interface'
 import BookingInterface from '../interfaces/bookings.interface'
-import BookingsModel from '../models/bookings.model'
+import BookingModel from '../models/bookings.model'
 import HttpException from '../exceptions/http/HttpException'
 import BookingNotFoundException from '../exceptions/bookings/BookingNotFoundException' 
 import BookingsDto from '../dtos/bookings.dto'
@@ -12,7 +12,7 @@ import authMiddleware from '../middleware/auth.middleware';
 class BookingsController implements Controller {
     public path = '/bookings';
     public router = express.Router();
-    private bookings = BookingsModel;
+    private bookings = BookingModel;
    
     constructor() {
       this.initializeRoutes()
