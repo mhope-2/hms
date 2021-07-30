@@ -86,15 +86,10 @@ class AuthenticationController implements Controller {
               ...userData,
               password: hashedPassword,
             });
-            console.log("Created User")
             user.password = '';
-            console.log("Pass res")
             const tokenData = this.createToken(user);
-            console.log("Created token")
-            res.setHeader('Set-Cookie', [this.createCookie(tokenData)])
-            console.log("Set Coolie User")
-            res.json({"Response":`User with username ${user.username} created successfully`,
-                      "Token": tokenData.token})
+            res.setHeader('Cookie', [this.createCookie(tokenData)])
+            res.json({"Response":`User with username ${user.username} created successfully`})
 
           }  
           else {
