@@ -6,24 +6,24 @@ import HttpException from '../exceptions/http/HttpException'
 import RoomNotFoundException from '../exceptions/room/RoomNotFoundException' 
 import RolesDto from '../dtos/roles.dto'
 import validationMiddleware from '../middleware/validation.middleware'
-import authMiddleware from '../middleware/auth.middleware';
+import authMiddleware from '../middleware/auth.middleware'
 
 
 class RoomsController implements Controller {
-    public path = '/roles';
-    public router = express.Router();
-    private role = RolesModel;
+    public path = '/roles'
+    public router = express.Router()
+    private role = RolesModel
    
     constructor() {
       this.initializeRoutes()
     }
 
     private initializeRoutes() {
-      this.router.get(this.path, this.rolesList);
-      this.router.get(`${this.path}/:id`, this.findRoleById);
-      this.router.post(`${this.path}/add`, authMiddleware, validationMiddleware(RolesDto), this.addRole);
-      this.router.patch(`${this.path}/update/:id`, authMiddleware, this.updateRoleById);
-      this.router.delete(`${this.path}/delete`, authMiddleware, this.deleteRoleById);
+      this.router.get(this.path, this.rolesList)
+      this.router.get(`${this.path}/:id`, this.findRoleById)
+      this.router.post(`${this.path}/add`, authMiddleware, validationMiddleware(RolesDto), this.addRole)
+      this.router.patch(`${this.path}/update/:id`, authMiddleware, this.updateRoleById)
+      this.router.delete(`${this.path}/delete`, authMiddleware, this.deleteRoleById)
     }
 
     // list all roles
@@ -41,7 +41,7 @@ class RoomsController implements Controller {
       
       const saveNewroom = await newRole.save()
       .then(() => res.json({"Response":`room with number ${addRoleData.role} added`}))
-      .catch(err => res.status(400).json('Error: ' + err));
+      .catch(err => res.status(400).json('Error: ' + err))
   }
 
 
@@ -53,7 +53,7 @@ class RoomsController implements Controller {
       if (room)
         res.json(room)
       else {
-        next(new HttpException(404, 'Room not found'));
+        next(new HttpException(404, 'Room not found'))
       }
     })
   }
@@ -83,9 +83,9 @@ class RoomsController implements Controller {
         this.role.findByIdAndDelete(id)
         .then(successResponse => {
           if (successResponse) {
-              res.json({"Response":`Room with id ${id} deleted successfully`});
+              res.json({"Response":`Room with id ${id} deleted successfully`})
           } else {
-            next(new RoomNotFoundException(id));
+            next(new RoomNotFoundException(id))
           }
         })
     }
