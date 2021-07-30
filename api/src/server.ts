@@ -6,6 +6,7 @@ import App from './app'
 import RoomsController from './controllers/rooms.controller'
 import RoomResourcesController from './controllers/roomResources.controller'
 import BookingsController from './controllers/bookings.controller'
+import RolesController from './controllers/roles.controller'
 
 // get env variables
 dotenv.config({
