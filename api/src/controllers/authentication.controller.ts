@@ -116,7 +116,6 @@ class AuthenticationController implements Controller {
       }
 
       private createCookie(tokenData: TokenData) {
-        
         return `Authorization=${tokenData.token}; HttpOnly; Max-Age=${tokenData.expiresIn}`;
       }
 
@@ -136,7 +135,6 @@ class AuthenticationController implements Controller {
           token: jwt.sign(dataStoredInToken, secret, { expiresIn }),
         };
       }
-    
 
 }    
 
