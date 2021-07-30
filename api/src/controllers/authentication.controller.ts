@@ -125,7 +125,7 @@ class AuthenticationController implements Controller {
 
     // create token
       private createToken(user): TokenData {
-        const expiresIn = 15 * 60
+        const expiresIn = 300
         const secret = process.env.JWT_SECRET;
         const dataStoredInToken: DataStoredInToken = {
           _id: user._id
