@@ -89,12 +89,13 @@ class AuthenticationController implements Controller {
             const tokenData = this.createToken(user)
             try {
               // assign token to created user
-              user.token = tokenData.token
+              userData.token = this.setCookie(tokenData)  
+              console.log(userData)
               this.user.findByIdAndUpdate(user.id, userData, {new: true})
             } catch (error) {
               console.log(error)
             }
-            // user.password = ''
+            user.password = ''
             res.setHeader('Cookie', [this.setCookie(tokenData)])
             res.json({"response": `user with username ${user.username} registered successfully`})
           }  

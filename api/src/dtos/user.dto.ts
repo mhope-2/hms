@@ -24,6 +24,10 @@ class CreateUserDto {
 
   @IsOptional()
   @IsString()
+  public token: string;
+
+  @IsOptional()
+  @IsString()
   public role: string;
 }
 
