@@ -5,6 +5,7 @@ interface UserInterface {
     firstName: string,
     lastName: string,
     password: string,
+    token: string,
     role?: string     
   }
 
