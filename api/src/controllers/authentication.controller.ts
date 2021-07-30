@@ -13,6 +13,7 @@ import CreateUserDto from '../dtos/user.dto';
 import UserModel from '../models/user.model';
 import LogInDto from '../login/login.dto'
 import TokenData from '../interfaces/tokenData.interface'
+import UserInterface from '../interfaces/user.interface'
 import DataStoredInToken from '../interfaces/dataStoredInToken.interface'
 const jwt = require('jsonwebtoken')
 
@@ -38,7 +39,7 @@ class AuthenticationController implements Controller {
     // get all users  
     private userList = async (req, res) => {
         await this.user.find()
-          .then(users => res.json(users)) 
+          .then(users => res.json(users))
           .catch(err => res.status(400).json('Error: ' + err))
     } 
 
@@ -58,13 +59,17 @@ class AuthenticationController implements Controller {
     // registration middleware
     private registration = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
         const userData: CreateUserDto = req.body;
-
+        
         const passwordsMatch = userData.password === userData.password2 ? true : false
         
         if (passwordsMatch) {
 
             if(userData.password.length < 6){
               next(new InvalidPasswordLengthException())
+            }
+
+            if(req.body.password != req.body.password2){
+              next(new PasswordMismatchException())
             }
 
             if ( await this.user.findOne({ email: userData.email }) ) {
@@ -81,11 +86,15 @@ class AuthenticationController implements Controller {
               ...userData,
               password: hashedPassword,
             });
+            console.log("Created User")
             user.password = '';
+            console.log("Pass res")
             const tokenData = this.createToken(user);
+            console.log("Created token")
             res.setHeader('Set-Cookie', [this.createCookie(tokenData)])
-            res.json({"Response":`User with username ${user.username} created successfully`})
-
+            console.log("Set Coolie User")
+            res.json({"Response":`User with username ${user.username} created successfully`,
+                      "Token": tokenData.token})
 
           }  
           else {
