@@ -22,7 +22,8 @@ const app = new App(
     new AuthenticationController(),
     new RoomsController(),
     new RoomResourcesController(),
-    new BookingsController()
+    new BookingsController(),
+    new RolesController()
   ],
 );
 

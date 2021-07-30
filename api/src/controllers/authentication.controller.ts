@@ -38,7 +38,7 @@ class AuthenticationController implements Controller {
     // get all users  
     private userList = async (req, res) => {
         await this.user.find()
-          .then(users => res.json(users))
+          .then(users => res.json(users)) 
           .catch(err => res.status(400).json('Error: ' + err))
     } 
 
@@ -58,17 +58,13 @@ class AuthenticationController implements Controller {
     // registration middleware
     private registration = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
         const userData: CreateUserDto = req.body;
-        
-        const passwordsMatch = await bcrypt.compare(req.body.password, req.body.password2)
+
+        const passwordsMatch = userData.password === userData.password2 ? true : false
         
         if (passwordsMatch) {
 
             if(userData.password.length < 6){
               next(new InvalidPasswordLengthException())
-            }
-
-            if(req.body.password != req.body.password2){
-              next(new PasswordMismatchException())
             }
 
             if ( await this.user.findOne({ email: userData.email }) ) {

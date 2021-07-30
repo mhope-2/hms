@@ -4,7 +4,7 @@ import AuthenticationTokenMissingException from '../exceptions/auth/Authenticati
 import WrongAuthenticationTokenException from '../exceptions/auth/WrongAuthenticationTokenException';
 import DataStoredInToken from '../interfaces/dataStoredInToken.interface';
 import RequestWithUser from '../interfaces/requestWithUser.interface';
-import UserModel from '../models/rooms.model';
+import UserModel from '../models/user.model';
  
 async function authMiddleware(req: RequestWithUser, res: Response, next: NextFunction) {
   const cookies = req.cookies;
