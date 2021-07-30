@@ -21,7 +21,7 @@ const UserSchema = new mongoose.Schema({
     lastName: { type: String, required: true },
     phone: { type: String, required: true },
     password: { type: String, required: true },
-    token: { type: String },
+    user_token: { type: String },
     role:[
         {type: Schema.Types.ObjectId, ref: 'Roles', required: false}
       ],

@@ -89,7 +89,7 @@ class AuthenticationController implements Controller {
             const tokenData = this.createToken(user)
             try {
               // assign token to created user
-              userData.token = this.setCookie(tokenData)  
+              userData.user_token = this.setCookie(tokenData)  
               console.log(userData)
               this.user.findByIdAndUpdate(user.id, userData, {new: true})
             } catch (error) {
