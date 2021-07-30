@@ -86,7 +86,7 @@ class RolesController implements Controller {
           if (successResponse) {
               res.json({"Response":`Role with id ${id} deleted successfully`})
           } else {
-            next(new RoomNotFoundException(id))
+            next(new RoleNotFoundException(id))
           }
         })
     }
