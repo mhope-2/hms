@@ -2,6 +2,7 @@ import { NextFunction, Response } from 'express';
 import * as jwt from 'jsonwebtoken';
 import AuthenticationTokenMissingException from '../exceptions/auth/AuthenticationTokenMissingException';
 import WrongAuthenticationTokenException from '../exceptions/auth/WrongAuthenticationTokenException';
+import UserNotExistException from '../exceptions/auth/UserNotExistException';
 import DataStoredInToken from '../interfaces/dataStoredInToken.interface';
 import RequestWithUser from '../interfaces/requestWithUser.interface';
 import UserModel from '../models/user.model';
@@ -18,9 +19,10 @@ async function authMiddleware(req: RequestWithUser, res: Response, next: NextFun
         req.user = user;
         next();
       } else {
-        next(new WrongAuthenticationTokenException());
+        next(new UserNotExistException());
       }
     } catch (error) {
+      console.log(error)
       next(new WrongAuthenticationTokenException());
     }
   } else {

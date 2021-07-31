@@ -33,6 +33,8 @@ class AuthenticationController implements Controller {
         this.router.get(`${this.path}/:id`, this.findUserById)
         this.router.post(`${this.path}/user/register`, validationMiddleware(CreateUserDto), this.registration)
         this.router.post(`${this.path}/user/login`, validationMiddleware(LogInDto), this.loggingIn)
+        this.router.post(`${this.path}/use/logout`, this.loggingOut);
+
       }
 
 
@@ -149,6 +151,13 @@ class AuthenticationController implements Controller {
           expiresIn,
           token: jwt.sign(dataStoredInToken, secret, { expiresIn }),
         }
+      }
+
+
+  
+      private loggingOut = (req: express.Request, res: express.Response) => {
+        res.setHeader('Cookie', ['Authorization=;Max-age=0']);
+        res.json({"response": "logged out successfully"});
       }
 
 }    
