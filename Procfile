@@ -1,1 +1,1 @@
-web: ./src yarn start
+web: yarn start
