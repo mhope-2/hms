@@ -41,7 +41,7 @@ class RolesController implements Controller {
       const newRole = new this.role(addRoleData)
       
       const saveNewRole = await newRole.save()
-      .then(() => res.json({"Response":`Role ${addRoleData.role} added`}))
+      .then(() => res.json({"Response":`${addRoleData.role} role added`}))
       .catch(err => res.status(400).json('Error: ' + err))
   }
 

@@ -90,7 +90,6 @@ class AuthenticationController implements Controller {
             })
             const tokenData = this.createToken(user)
               // assign token to created user
-              // userData.token = this.setCookie(tokenData)  
               const token = this.setCookie(tokenData)
               this.user.findOne({_id: user._id}, function(err, user){
                 user.token = token;
@@ -100,10 +99,6 @@ class AuthenticationController implements Controller {
                   }
                 });
              });
-
-              this.user.findByIdAndUpdate(user._id, userData, {new: true})
-              console.log(user)
-
             user.password = ''
             res.setHeader('Cookie', [this.setCookie(tokenData)])
             res.json({"response": `user with username ${user.username} registered successfully`})
@@ -121,8 +116,21 @@ class AuthenticationController implements Controller {
         if (user) {
           const isPasswordMatching = await bcrypt.compare(logInData.password, user.password)
           if (isPasswordMatching) {
+
+          const tokenData = this.refreshToken(user)
+            // assign token to created user
+            const token = this.setCookie(tokenData)
+            this.user.findOne({_id: user._id}, function(err, user){
+              user.token = token;
+              user.save((err) => {
+                if (err) {
+                  console.log(err)
+                }
+              });
+           });
+
             user.password = ''
-            const decoded_token = jwt.decode(user.token, {complete: true})
+            
             res.json(user)
           } else {
             next(new InvalidCredentialsException())
@@ -142,7 +150,7 @@ class AuthenticationController implements Controller {
 
     // create token
       private createToken(user): TokenData {
-        const expiresIn = 300
+        const expiresIn = Number(process.env.JWT_EXPIRES) || 60 * 60
         const secret = process.env.JWT_SECRET
         const dataStoredInToken: DataStoredInToken = {
           _id: user._id
@@ -154,7 +162,21 @@ class AuthenticationController implements Controller {
       }
 
 
-  
+      // create token
+      private refreshToken(user): TokenData {
+        const expiresIn = Number(process.env.JWT_REFRESH_EXPIRES) || 60 * 60
+        const secret = process.env.JWT_REFRESH_SECRET
+        const dataStoredInToken: DataStoredInToken = {
+          _id: user._id
+        }
+        return {
+          expiresIn,
+          token: jwt.sign(dataStoredInToken, secret, { expiresIn }),
+        }
+      }
+
+
+      // logout
       private loggingOut = (req: express.Request, res: express.Response) => {
         res.setHeader('Cookie', ['Authorization=;Max-age=0']);
         res.json({"response": "logged out successfully"});
