@@ -131,7 +131,7 @@ class AuthenticationController implements Controller {
       }
 
       private setCookie(tokenData: TokenData) {
-        return `Authorization=${tokenData.token} HttpOnly Max-Age=${tokenData.expiresIn}`
+        return `Authorization=${tokenData.token}; HttpOnly; Max-Age=${tokenData.expiresIn}`
       }
 
       get getCookie(){
