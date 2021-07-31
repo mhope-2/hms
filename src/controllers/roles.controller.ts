@@ -80,7 +80,7 @@ class RolesController implements Controller {
 
     // Delete by id
     private deleteRoleById = async (req:express.Request, res:express.Response, next:express.NextFunction) => {
-        const id = req.body.id
+        const id = req.params.id
         this.role.findByIdAndDelete(id)
         .then(successResponse => {
           if (successResponse) {
