@@ -23,7 +23,7 @@ class RoomResourcesController implements Controller {
       this.router.get(`${this.path}/:id`, this.findRoomResourceById);
       this.router.post(`${this.path}/add`, authMiddleware, validationMiddleware(RoomResourcesDto), this.addRoomsResource);
       this.router.patch(`${this.path}/update/:id`, authMiddleware, this.updateRoomResourceById);
-      this.router.delete(`${this.path}/delete`, authMiddleware, this.deleteRoomResourceById);
+      this.router.delete(`${this.path}/delete/:id`, authMiddleware, this.deleteRoomResourceById);
     }
    
 
@@ -80,7 +80,7 @@ class RoomResourcesController implements Controller {
 
     // Delete by id
     private deleteRoomResourceById = async (req:express.Request, res:express.Response, next:express.NextFunction) => {
-        const id = req.body.id
+        const id = req.params.id
         this.roomResource.findByIdAndDelete(id)
         .then(successResponse => {
           if (successResponse) {

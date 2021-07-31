@@ -23,7 +23,7 @@ class RoomsController implements Controller {
       this.router.get(`${this.path}/:id`, this.findRoomById);
       this.router.post(`${this.path}/add`, authMiddleware, validationMiddleware(RoomsDto), this.addRoom);
       this.router.patch(`${this.path}/update/:id`, authMiddleware, this.updateRoomById);
-      this.router.delete(`${this.path}/delete`, authMiddleware, this.deleteRoomById);
+      this.router.delete(`${this.path}/delete/:id`, authMiddleware, this.deleteRoomById);
     }
    
 
@@ -80,7 +80,7 @@ class RoomsController implements Controller {
 
     // Delete by id
     private deleteRoomById = async (req:express.Request, res:express.Response, next:express.NextFunction) => {
-        const id = req.body.id
+        const id = req.params.id
         this.room.findByIdAndDelete(id)
         .then(successResponse => {
           if (successResponse) {

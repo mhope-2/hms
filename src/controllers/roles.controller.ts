@@ -24,7 +24,7 @@ class RolesController implements Controller {
       this.router.get(`${this.path}/:id`, this.findRoleById)
       this.router.post(`${this.path}/add`, authMiddleware, validationMiddleware(RolesDto), this.addRole)
       this.router.patch(`${this.path}/update/:id`, authMiddleware, this.updateRoleById)
-      this.router.delete(`${this.path}/delete`, authMiddleware, this.deleteRoleById)
+      this.router.delete(`${this.path}/delete/:id`, authMiddleware, this.deleteRoleById)
     }
 
     // list all roles
