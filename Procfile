@@ -1,0 +1,1 @@
+web: ./src yarn start
