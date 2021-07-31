@@ -22,10 +22,8 @@ const UserSchema = new mongoose.Schema({
     phone: { type: String, required: true },
     password: { type: String, required: true },
     user_token: { type: String },
-    role:[
-        {type: Schema.Types.ObjectId, ref: 'Roles', required: false}
-      ],
-    
+    roleId: { type: Schema.Types.ObjectId, ref: 'Roles' }
+      
 },
   {timestamps:true}
 )
