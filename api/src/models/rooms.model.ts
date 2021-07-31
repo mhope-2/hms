@@ -6,7 +6,7 @@ const RoomsSchema = new mongoose.Schema({
 
     roomNumber: { type: String, required: true, unique:true },
     floor: { type: Number, required: true },
-    resources:[
+    resourcesIds:[
       {type: Schema.Types.ObjectId, ref: 'RoomResources'}
     ],
     price: { type: Number, required: true}

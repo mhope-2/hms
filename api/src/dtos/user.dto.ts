@@ -24,7 +24,7 @@ class CreateUserDto {
 
   @IsOptional()
   @IsString()
-  public user_token: string;
+  public token: string;
 
   @IsOptional()
   @IsString()
