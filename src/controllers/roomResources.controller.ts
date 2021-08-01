@@ -37,11 +37,11 @@ class RoomResourcesController implements Controller {
    
     // add Room Resource
     private addRoomsResource = async (req:express.Request, res:express.Response) => {
-      const addPostData : RoomResourcesDto = req.body
-      const newPost = new this.roomResource(addPostData)
+      const addRoomResourceData : RoomResourcesDto = req.body
+      const newRoomResource = new this.roomResource(addRoomResourceData)
       
-      const saveNewPost = await newPost.save()
-      .then(() => res.json({"Response":`Post ${addPostData.name} added`}))
+      const saveNewRoomResource = await newRoomResource.save()
+      .then(() => res.json({"Response":`Post ${addRoomResourceData.name} added`}))
       .catch(err => res.status(400).json('Error: ' + err));
   }
 
