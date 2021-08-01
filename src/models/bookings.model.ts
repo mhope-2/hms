@@ -18,6 +18,7 @@ const BookingsSchema = new mongoose.Schema({
         unique:true,
         minlength:3
       },
+    status: {type: String, required: true, default: 'pending'}
 },
   {timestamps:true}
 )
