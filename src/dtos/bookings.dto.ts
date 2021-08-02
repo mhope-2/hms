@@ -1,4 +1,4 @@
-import { IsString, IsOptional } from 'class-validator';
+import { IsString, IsOptional, IsNumber } from 'class-validator';
  
 class BookingDto {
 
@@ -9,10 +9,10 @@ class BookingDto {
     public bookingCode: string;
     
     @IsString()
-    public roomIds: string
+    public roomIds: string[]
 
-    @IsString()
-    public price: string
+    @IsNumber()
+    public cost: Number
 
     @IsString()
     public userPhone: string
