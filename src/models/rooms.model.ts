@@ -1,5 +1,5 @@
 import * as mongoose from 'mongoose'
-import UserInterface from '../interfaces/rooms.interface';
+import RoomsInterface from '../interfaces/rooms.interface';
 let Schema = mongoose.Schema;
 
 const RoomsSchema = new mongoose.Schema({
@@ -14,6 +14,6 @@ const RoomsSchema = new mongoose.Schema({
   {timestamps:true}
 )
 
-const RoomsModel = mongoose.model<UserInterface & mongoose.Document>('Rooms', RoomsSchema)
+const RoomsModel = mongoose.model<RoomsInterface & mongoose.Document>('Rooms', RoomsSchema)
  
 export default RoomsModel 
