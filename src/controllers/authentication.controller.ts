@@ -13,6 +13,7 @@ import UserModel from '../models/user.model'
 import LogInDto from '../login/login.dto'
 import TokenData from '../interfaces/tokenData.interface'
 import DataStoredInToken from '../interfaces/dataStoredInToken.interface'
+import { truncate } from 'node:fs'
 const jwt = require('jsonwebtoken')
 
 class AuthenticationController implements Controller {
@@ -115,6 +116,13 @@ class AuthenticationController implements Controller {
         const user = await this.user.findOne({ username: logInData.username })
         if (user) {
           const isPasswordMatching = await bcrypt.compare(logInData.password, user.password)
+          .then(()=>{
+            console.log("correct login password")
+            return true
+          })
+          .catch(err =>{
+            console.log(err)
+          })
           
           if (isPasswordMatching) {
 
