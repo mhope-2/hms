@@ -1,6 +1,5 @@
 import * as bcrypt from 'bcrypt'
 import * as express from 'express'
-// const bcrypt = require('bcrypt')
 import UserWithThatEmailAlreadyExistsException from '../exceptions/auth/UserWithThatEmailAlreadyExistsException'
 import InvalidCredentialsException from '../exceptions/auth/InvalidCredentialsException'
 import PasswordMismatchException from '../exceptions/auth/PasswordMismatchException'
