@@ -1,6 +1,6 @@
 import express from 'express'
 import Controller from '../interfaces/controller.interface'
-import roomInterface from '../interfaces/roomResources.interface'
+import roomInterface from '../interfaces/rooms.interface'
 import RoomsModel from '../models/rooms.model'
 import HttpException from '../exceptions/http/HttpException'
 import RoomNotFoundException from '../exceptions/room/RoomNotFoundException' 
