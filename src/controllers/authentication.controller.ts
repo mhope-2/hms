@@ -41,7 +41,12 @@ class AuthenticationController implements Controller {
     // get all users  
     private userList = async (req, res) => {
         await this.user.find()
-          .then(users => res.json(users))
+          .then(users => {
+            for (let usersItem =0; usersItem<users.length; usersItem++){
+              delete usersItem["password"]
+            }
+              res.json(users)
+          }) 
           .catch(err => res.status(400).json('Error: ' + err))
     } 
 
