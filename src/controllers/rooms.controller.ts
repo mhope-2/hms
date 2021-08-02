@@ -41,7 +41,7 @@ class RoomsController implements Controller {
       const newRoom = new this.room(addRoomData)
       
       const saveNewroom = await newRoom.save()
-      .then(() => res.json({"Response":`room with number ${addRoomData.roomNumber} added`}))
+      .then(() => res.json({"Response":`room with number ${addRoomData.roomNumber} added successfully`}))
       .catch(err => res.status(400).json('Error: ' + err));
   }
 

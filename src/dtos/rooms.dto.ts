@@ -1,4 +1,4 @@
-import { IsString,IsNumber } from 'class-validator';
+import { IsString,IsNumber,MinLength } from 'class-validator';
 
 class RoomsDto {
   @IsString()
@@ -7,8 +7,10 @@ class RoomsDto {
   @IsString()
   public floor: string
 
-  @IsString()
-  public resourceIds: string;
+  @MinLength(24, {
+    each: true,
+  })
+  public resourceIds: string[];
 
   @IsNumber()
   public price: Number
