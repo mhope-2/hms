@@ -42,8 +42,8 @@ class AuthenticationController implements Controller {
     private userList = async (req, res) => {
         await this.user.find()
           .then(users => {
-            for (let usersItem =0; usersItem<users.length; usersItem++){
-              delete usersItem["password"]
+            for (let usersItem in users){
+                delete usersItem["password"]
             }
               res.json(users)
           }) 
