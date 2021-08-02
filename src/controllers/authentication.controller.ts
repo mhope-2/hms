@@ -113,7 +113,7 @@ class AuthenticationController implements Controller {
       // login middleware
       private loggingIn = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
         const logInData: LogInDto = req.body
-        const user = await this.user.findOne({ username: logInData.username })
+        const user = await this.user.findOne({ username: logInData.username }).select("+password");
         if (user) {
           const isPasswordMatching = await bcrypt.compare(logInData.password, user.password)
           .then((result)=>{
