@@ -45,6 +45,7 @@ class BookingsController implements Controller {
       bookingInt += incrementValue
       let bookingString : string = "BK"
       let bookingCode: string = bookingString+String(bookingInt)
+      bookingInt += 1
 
       // add booking code to request body
       addBookingData.bookingCode = bookingCode
