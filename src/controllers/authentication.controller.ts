@@ -13,7 +13,6 @@ import CreateUserDto from '../dtos/user.dto'
 import UserModel from '../models/user.model'
 import LogInDto from '../login/login.dto'
 import TokenData from '../interfaces/tokenData.interface'
-import UserInterface from '../interfaces/user.interface'
 import DataStoredInToken from '../interfaces/dataStoredInToken.interface'
 const jwt = require('jsonwebtoken')
 
@@ -42,9 +41,7 @@ class AuthenticationController implements Controller {
     private userList = async (req, res) => {
         await this.user.find()
           .then(users => {
-            for (let usersItem in users){
-                delete usersItem["password"]
-            }
+              users.forEach(item => item.password="*******************")
               res.json(users)
           }) 
           .catch(err => res.status(400).json('Error: ' + err))

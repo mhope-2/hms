@@ -38,6 +38,9 @@ class BookingsController implements Controller {
     // add Booking
     private addBooking = async (req:express.Request, res:express.Response) => {
       const addBookingData : BookingsDto = req.body
+      // generate booking code
+      // set inital to 00001
+      // add plus 1
       const newPost = new this.bookings(addBookingData)
       
       const saveNewBooking = await newPost.save()
