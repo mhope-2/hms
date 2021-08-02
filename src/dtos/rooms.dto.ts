@@ -1,4 +1,4 @@
-import { IsOptional, IsString, ValidateNested } from 'class-validator';
+import { MinLength, IsString, ValidateNested } from 'class-validator';
 
 class RoomsDto {
   @IsString()
@@ -7,8 +7,10 @@ class RoomsDto {
   @IsString()
   public floor: string
 
-  @IsString()
-  public resources: Object
+  @MinLength(24, {
+    each: true,
+  })
+  resourceIds: string[];
 
   @IsString()
   public price: Number

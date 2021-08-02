@@ -9,7 +9,7 @@ const RoomsSchema = new mongoose.Schema({
     resourcesIds:[
       {type: Schema.Types.ObjectId, ref: 'RoomResources'}
     ],
-    price: { type: Number, required: true}
+    price: { type: Number, required: true} // in ghc
 },
   {timestamps:true}
 )
