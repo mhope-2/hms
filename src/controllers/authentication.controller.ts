@@ -41,7 +41,6 @@ class AuthenticationController implements Controller {
     private userList = async (req, res) => {
         await this.user.find()
           .then(users => {
-              // users.forEach(item => item.password="*******************...")
               res.json(users)
           }) 
           .catch(err => res.status(400).json('Error: ' + err))
