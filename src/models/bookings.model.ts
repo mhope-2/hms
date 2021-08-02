@@ -13,7 +13,7 @@ const BookingsSchema = new mongoose.Schema({
       type: String,
       validate: [validator.isEmail, "Please provide a valid email"],
       required:true,
-      unique:true,
+      unique:false,
       lowercase: true,
       trim:true,
       minlength:3
