@@ -19,7 +19,7 @@ const UserSchema = new mongoose.Schema({
     middleName: { type: String, required: false },
     lastName: { type: String, required: true },
     phone: { type: String, required: true },
-    password: { type: String, required: true, select: false, minlength: 6 },
+    password: { type: String, required: true,  minlength: 6 },
     token: { type: String },
     roleId: { type: Schema.Types.ObjectId, ref: 'Roles' }
       
