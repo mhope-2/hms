@@ -103,7 +103,7 @@ class BookingsController implements Controller {
      * return generated booking code
      **/
     private generateBookingCode = (min, max): string => { // min and max included 
-      return String(Math.floor(Math.random() * (max - min + 1) + min))
+      return "BK" + String(Math.floor(Math.random() * (max - min + 1) + min))
     }
 
 
