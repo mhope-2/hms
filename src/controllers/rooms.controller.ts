@@ -60,7 +60,7 @@ class RoomsController implements Controller {
   }
 
 
-  // Update Exercide
+  // Update Room Info
    private updateRoomById = async (req:express.Request, res:express.Response, next:express.NextFunction) => {
 
     const id = req.params.id

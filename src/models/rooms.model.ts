@@ -5,7 +5,7 @@ let Schema = mongoose.Schema;
 const RoomsSchema = new mongoose.Schema({
 
     roomNumber: { type: String, required: true, unique:true },
-    floor: { type: Number, required: true },
+    floor: { type: String, required: true },
     resourceIds:[
       {type: Schema.Types.ObjectId, ref: 'RoomResources'}
     ],
