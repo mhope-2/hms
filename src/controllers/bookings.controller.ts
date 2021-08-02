@@ -43,7 +43,7 @@ class BookingsController implements Controller {
 1
 
       // add booking code to request body
-      addBookingData.bookingCode = this.generateBookingCode()
+      addBookingData.bookingCode = this.generateBookingCode(100000,900000)
 
       const newBooking = new this.bookings(addBookingData)
       
@@ -102,14 +102,8 @@ class BookingsController implements Controller {
     /**
      * return generated booking code
      **/
-    public bookingInt:number = 0
-
-    private generateBookingCode = (): string =>{
-      const incrementValue: number = 1
-      this.bookingInt += incrementValue 
-      let bookingCodePrefix: string = "BK"
-      let bookingCode: string = bookingCodePrefix + String(this.bookingInt)
-      return bookingCode
+    private generateBookingCode = (min, max): string => { // min and max included 
+      return String(Math.floor(Math.random() * (max - min + 1) + min))
     }
 
 
