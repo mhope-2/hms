@@ -1,6 +1,6 @@
 import express from 'express'
 import Controller from '../interfaces/controller.interface'
-import PostInterface from '../interfaces/roomResources.interface'
+import RoomResourcesInterface from '../interfaces/roomResources.interface'
 import RoomResourcesModel from '../models/roomResources.model'
 import HttpException from '../exceptions/http/HttpException'
 import RoomResourceNotFoundException from '../exceptions/roomResources/RoomResourceNotFoundException' 
@@ -30,7 +30,7 @@ class RoomResourcesController implements Controller {
     // list all room resources
     private roomsResourcesList = async (req:express.Request, res:express.Response) => {
         await this.roomResource.find()
-        .then(posts => res.json(posts))
+        .then(resources => res.json(resources))
         .catch(err => res.status(400).json('Error: ' + err)) 
     } 
 
@@ -42,7 +42,7 @@ class RoomResourcesController implements Controller {
       
       const saveNewRoomResource = await newRoomResource.save()
       .then(() => res.json({"Response":`${addRoomResourceData.name} added to room resources`}))
-      .catch(err => res.status(400).json('Error: ' + err));
+      .catch(err => res.status(400).json({'Error:' : err}));
   }
 
 
@@ -64,9 +64,9 @@ class RoomResourcesController implements Controller {
    private updateRoomResourceById = async (req:express.Request, res:express.Response, next:express.NextFunction) => {
 
     const id = req.params.id
-    const updatePostData: PostInterface = req.body
+    const updateRoomResourceData: RoomResourcesInterface = req.body
 
-    this.roomResource.findByIdAndUpdate(id, updatePostData, {new: true})
+    this.roomResource.findByIdAndUpdate(id, updateRoomResourceData, {new: true})
     .then(roomResource => {
       if (roomResource)
         res.json({"Response":`Room Resource with id ${id} updated`})
