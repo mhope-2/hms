@@ -8,7 +8,7 @@ class RoomsDto {
   public floor: string
 
   @IsString()
-  resourceIds: string;
+  public resourceIds: string
 
   @IsString()
   public price: Number
