@@ -41,7 +41,7 @@ class RoomResourcesController implements Controller {
       const newRoomResource = new this.roomResource(addRoomResourceData)
       
       const saveNewRoomResource = await newRoomResource.save()
-      .then(() => res.json({"Response":`Post ${addRoomResourceData.name} added`}))
+      .then(() => res.json({"Response":`${addRoomResourceData.name} added to room resources`}))
       .catch(err => res.status(400).json('Error: ' + err));
   }
 
