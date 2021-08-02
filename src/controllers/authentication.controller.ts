@@ -115,6 +115,7 @@ class AuthenticationController implements Controller {
         const user = await this.user.findOne({ username: logInData.username })
         if (user) {
           const isPasswordMatching = await bcrypt.compare(logInData.password, user.password)
+          
           if (isPasswordMatching) {
 
           const tokenData = this.refreshToken(user)
@@ -140,7 +141,7 @@ class AuthenticationController implements Controller {
         }
       }
 
-      private setCookie(tokenData: TokenData) {
+      public setCookie(tokenData: TokenData) {
         return `Authorization=${tokenData.token}; HttpOnly; Max-Age=${tokenData.expiresIn}`
       }
 
@@ -149,7 +150,7 @@ class AuthenticationController implements Controller {
       }
 
     // create token
-      private createToken(user): TokenData {
+      public createToken(user): TokenData {
         const expiresIn = Number(process.env.JWT_EXPIRES) || 60 * 60
         const secret = process.env.JWT_SECRET
         const dataStoredInToken: DataStoredInToken = {
@@ -163,7 +164,7 @@ class AuthenticationController implements Controller {
 
 
       // create token
-      private refreshToken(user): TokenData {
+      public refreshToken(user): TokenData {
         const expiresIn = Number(process.env.JWT_REFRESH_EXPIRES) || 60 * 60
         const secret = process.env.JWT_REFRESH_SECRET
         const dataStoredInToken: DataStoredInToken = {
