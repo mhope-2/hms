@@ -1,10 +1,10 @@
 
 interface BookingInterface {
-    bookingCode: string,
-    roomId: Object,
+    bookingCode?: String,
+    roomIds: string[],
     price: Number,
-    userPhone: string,
-    userEmail: string
+    userPhone: String,
+    userEmail: String
   }
 
 export default BookingInterface

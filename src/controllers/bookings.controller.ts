@@ -30,7 +30,7 @@ class BookingsController implements Controller {
     // list all Bookings
     private bookingsList = async (req:express.Request, res:express.Response) => {
         await this.bookings.find()
-        .then(posts => res.json(posts))
+        .then(bookings => res.json(bookings))
         .catch(err => res.status(400).json('Error: ' + err)) 
     } 
 
@@ -38,12 +38,20 @@ class BookingsController implements Controller {
     // add Booking
     private addBooking = async (req:express.Request, res:express.Response) => {
       const addBookingData : BookingsDto = req.body
+
       // generate booking code
-      // set inital to 00001
-      // add plus 1
-      const newPost = new this.bookings(addBookingData)
+      const incrementValue: number = 1
+      let bookingInt: number = 0
+      bookingInt += incrementValue
+      let bookingString : string = "BK"
+      let bookingCode: string = bookingString+String(bookingInt)
+
+      // add booking code to request body
+      addBookingData.bookingCode = bookingCode
+
+      const newBooking = new this.bookings(addBookingData)
       
-      const saveNewBooking = await newPost.save()
+      const saveNewBooking = await newBooking.save()
       .then(() => res.json({"Response":`Booking ${addBookingData.bookingCode} added`}))
       .catch(err => res.status(400).json('Error: ' + err));
   }
@@ -81,7 +89,7 @@ class BookingsController implements Controller {
     )}
 
 
-    // Delete by id
+    // Delete booking by id
     private deleteBookingById = async (req:express.Request, res:express.Response, next:express.NextFunction) => {
         const id = req.params.id
         this.bookings.findByIdAndDelete(id)
