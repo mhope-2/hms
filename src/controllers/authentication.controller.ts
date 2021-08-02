@@ -116,13 +116,13 @@ class AuthenticationController implements Controller {
         const user = await this.user.findOne({ username: logInData.username })
         if (user) {
           const isPasswordMatching = await bcrypt.compare(logInData.password, user.password)
-          .then(()=>{
-            console.log("correct login password")
-            return true
+          .then((result)=>{
+            if (result){
+              console.log("correct login password")
+              return true
+            }
           })
-          .catch(err =>{
-            console.log(err)
-          })
+          .catch(err =>console.error("LOGIN ERROR: ", err))
           
           if (isPasswordMatching) {
 
