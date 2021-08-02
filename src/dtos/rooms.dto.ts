@@ -1,4 +1,4 @@
-import { IsString } from 'class-validator';
+import { IsString,IsNumber } from 'class-validator';
 
 class RoomsDto {
   @IsString()
@@ -8,9 +8,9 @@ class RoomsDto {
   public floor: string
 
   @IsString()
-  public resourceIds: string
+  public resourceIds: string;
 
-  @IsString()
+  @IsNumber()
   public price: Number
 }
 
