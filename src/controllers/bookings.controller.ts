@@ -40,15 +40,10 @@ class BookingsController implements Controller {
       const addBookingData : BookingsDto = req.body
 
       // generate booking code
-      const incrementValue: number = 1
-      let bookingInt: number = 0
-      bookingInt += incrementValue
-      let bookingString : string = "BK"
-      let bookingCode: string = bookingString+String(bookingInt)
-      bookingInt += 1
+1
 
       // add booking code to request body
-      addBookingData.bookingCode = bookingCode
+      addBookingData.bookingCode = this.generateBookingCode()
 
       const newBooking = new this.bookings(addBookingData)
       
@@ -102,6 +97,22 @@ class BookingsController implements Controller {
           }
         })
     }
+
+
+    /**
+     * return generated booking code
+     **/
+    public bookingInt:number = 0
+
+    private generateBookingCode = (): string =>{
+      const incrementValue: number = 1
+      this.bookingInt += incrementValue 
+      let bookingCodePrefix: string = "BK"
+      let bookingCode: string = bookingCodePrefix + String(this.bookingInt)
+      return bookingCode
+    }
+
+
   // class end
   }
 
