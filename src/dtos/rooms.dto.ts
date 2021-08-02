@@ -9,6 +9,7 @@ class RoomsDto {
 
   @MinLength(24, {
     each: true,
+    message: 'resourceId must be at least 24 characters',
   })
   public resourceIds: string[];
 

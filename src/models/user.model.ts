@@ -1,17 +1,16 @@
 import * as mongoose from 'mongoose'
 import UserInterface from '../interfaces/user.interface';
+let validator = require('validator');
 let Schema = mongoose.Schema;
 
 
 const UserSchema = new mongoose.Schema({
     email: {
         type: String,
-        match: [
-          /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-          'Please add a valid email'
-        ],
+        validate: [validator.isEmail, "Please provide a valid email"],
         required:true,
         unique:true,
+        lowercase: true,
         trim:true,
         minlength:3
       },
@@ -20,7 +19,7 @@ const UserSchema = new mongoose.Schema({
     middleName: { type: String, required: false },
     lastName: { type: String, required: true },
     phone: { type: String, required: true },
-    password: { type: String, required: true },
+    password: { type: String, required: true, select: false, minlength: 6 },
     token: { type: String },
     roleId: { type: Schema.Types.ObjectId, ref: 'Roles' }
       

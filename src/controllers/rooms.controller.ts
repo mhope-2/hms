@@ -69,7 +69,7 @@ class RoomsController implements Controller {
     this.room.findByIdAndUpdate(id, updateRoomData, {new: true})
     .then(room => {
       if (room)
-        res.json({"Response":`room with id ${id} updated`})
+        res.json({"Response":`room with id ${id} updated successfully`})
       else{
         next(new RoomNotFoundException(id))
       }
