@@ -7,10 +7,8 @@ class RoomsDto {
   @IsString()
   public floor: string
 
-  @MinLength(24, {
-    each: true,
-  })
-  resourceIds: string[];
+  @IsString()
+  resourceIds: string;
 
   @IsString()
   public price: Number

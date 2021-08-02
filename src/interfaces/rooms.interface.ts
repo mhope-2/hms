@@ -2,7 +2,7 @@
 interface RoomsInterface {
     roomNumber: string,
     floor: Number,
-    resourceIds: string[],
+    resourceIds: string,
     price: Number,
   }
 
