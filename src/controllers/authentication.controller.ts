@@ -33,7 +33,7 @@ class AuthenticationController implements Controller {
         this.router.get(`${this.path}/:id`, this.findUserById)
         this.router.post(`${this.path}/user/register`, validationMiddleware(CreateUserDto), this.registration)
         this.router.post(`${this.path}/user/login`, validationMiddleware(LogInDto), this.loggingIn)
-        this.router.post(`${this.path}/use/logout`, this.loggingOut);
+        this.router.post(`${this.path}/user/logout`, this.loggingOut);
 
       }
 
