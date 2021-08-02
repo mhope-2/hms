@@ -1,6 +1,6 @@
 import express from 'express'
 import Controller from '../interfaces/controller.interface'
-import roomInterface from '../interfaces/rooms.interface'
+import RoomsInterface from '../interfaces/rooms.interface'
 import RoomsModel from '../models/rooms.model'
 import HttpException from '../exceptions/http/HttpException'
 import RoomNotFoundException from '../exceptions/room/RoomNotFoundException' 
@@ -64,7 +64,7 @@ class RoomsController implements Controller {
    private updateRoomById = async (req:express.Request, res:express.Response, next:express.NextFunction) => {
 
     const id = req.params.id
-    const updateRoomData: roomInterface = req.body
+    const updateRoomData: RoomsInterface = req.body
 
     this.room.findByIdAndUpdate(id, updateRoomData, {new: true})
     .then(room => {
