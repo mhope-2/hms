@@ -101,7 +101,7 @@ class AuthenticationController implements Controller {
                 });
              });
             user.password = ''
-            res.setHeader('Cookie', [this.setCookie(tokenData)])
+            res.setHeader('set-cookie', [this.setCookie(tokenData)])
             res.json({"response": `user with username ${user.username} registered successfully`})
           }  
           else {
@@ -187,7 +187,7 @@ class AuthenticationController implements Controller {
 
       // logout
       private loggingOut = (req: express.Request, res: express.Response) => {
-        res.setHeader('Cookie', ['Authorization=;Max-age=0']);
+        res.setHeader('set-cookie', ['Authorization=;Max-age=0']);
         res.json({"response": "logged out successfully"});
       }
 

@@ -2,6 +2,7 @@ import express from 'express'
 import Controller from '../interfaces/controller.interface'
 import BookingInterface from '../interfaces/bookings.interface'
 import BookingModel from '../models/bookings.model'
+import RoomsModel from '../models/rooms.model'
 import HttpException from '../exceptions/http/HttpException'
 import BookingNotFoundException from '../exceptions/bookings/BookingNotFoundException' 
 import BookingsDto from '../dtos/bookings.dto'
@@ -35,36 +36,77 @@ class BookingsController implements Controller {
 
    
     // add Booking
-    private addBooking = async (req:express.Request, res:express.Response) => {
-      const addBookingData : BookingsDto = req.body
+    private addBooking = async (req:express.Request, res:express.Response, next:express.NextFunction) => {
+      let addBookingData : BookingsDto = req.body
 
-      // add booking code to request body
-      addBookingData.bookingCode = this.generateBookingCode(100000,900000)      
+      const room = await RoomsModel.findById(addBookingData.roomId)
+      .exec( async (err, room) =>{
+        if (err){
+          next(new BookingNotFoundException(req.params.id))
+        }
+        if (room){
+          addBookingData.bookingCode = this.generateBookingCode(100000,900000) 
 
-      // save 
-      for(let i = 0; i < req.body.length; i++){
-        const newBooking = new this.bookings(addBookingData)
+          addBookingData.cost = room.price
+          
+          const newBooking = new this.bookings(addBookingData)
+ 
+        const saveNewBooking = await newBooking.save()
+        .then(() => {
+          //send mail 
+          /** Further improvement: to be made a background process
+           */
+          res.json({"Response":`Booking ${addBookingData.bookingCode} added`})
+        })
+        .catch(err => res.status(400).json('Error: ' + err));
+        
+          }
+        })
 
-         addBookingData.roomIds = addBookingData.roomIds[i]
+      console.log(addBookingData)
 
-          const saveNewBooking = await newBooking.save()
-          .then(() => res.json({"Response":`Booking ${addBookingData.bookingCode} added`}))
-          .catch(err => res.status(400).json('Error: ' + err));
-      }
+      
   }
+  
 
+  // further improvement => not implemented yet
+  private allowMultipleRoomBooking = async (requestBody: BookingsDto) =>{
+
+    const loopVar = requestBody
+
+    requestBody.bookingCode = this.generateBookingCode(100000,900000)      
+
+    // loop over room Ids and save separately with same booking code
+    for(let i = 0; i < loopVar.roomId.length; i++){
+
+      // requestBody.roomIds = [loopVar.roomId[i]]
+
+      const newBooking = new this.bookings(requestBody)
+
+      const saveNewBooking = await newBooking.save()
+      .then(()=> {
+        console.log("Saved booking data to database")
+      })
+      .catch(err => {
+        console.log("Failed to save booking data to database. Error: ",err)
+      })
+    }
+    requestBody.bookingCode
+  }
 
   // Get Booking Info by Id
   private findBookingById = async (req:express.Request, res:express.Response, next:express.NextFunction) => {
 
-    this.bookings.findById(req.params.id)
-    .then(booking => {
+    const booking = await this.bookings.findById(req.params.id).populate('roomId')
+    .exec((err, booking) =>{
+      if (err){
+        next(new BookingNotFoundException(req.params.id))
+      }
       if (booking)
         res.json(booking)
-      else {
-        next(new HttpException(404, 'Booking not found'));
-      }
+
     })
+    
   }
 
 

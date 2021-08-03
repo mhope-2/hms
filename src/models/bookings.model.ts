@@ -7,7 +7,7 @@ const BookingsSchema = new mongoose.Schema({
 
     bookingCode: { type: String, required: false, unique:false },
     
-    roomIds:{type: String, required: true},
+    roomId: [{type: Schema.Types.ObjectId, required: true, ref:'Rooms' }],
     
     cost:{ type: Number, required: false},
     
@@ -22,17 +22,29 @@ const BookingsSchema = new mongoose.Schema({
       minlength:3
     },
 
+    userFullName: {type: String, required: true},
+
+    numberOfPeople: {type: Number, required: true},
+
     status: {type: String, required: true, default: 'pending'},
 
-    approved_at: { type: Date },
+    approved_at: { type: Date, required: false },
 
-    days_valid : { type: Number },
-    
-    expires_at: { type: Date }
+    startDate: { type: Date, required: true },
 
+    endDate: { type: Date, required: true },
+
+    daysValid : { type: Number, required: false }
 },
   {timestamps:true}
 )
+
+
+BookingsSchema.virtual('rooms', {
+  ref: 'Rooms',
+  localField: '_id',
+  foreignField: 'roomNumber',
+});
 
 const BookingModel = mongoose.model<BookingsInterface & mongoose.Document>('Bookings', BookingsSchema)
  

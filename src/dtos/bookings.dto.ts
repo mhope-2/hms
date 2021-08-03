@@ -1,4 +1,4 @@
-import { IsString, IsOptional, IsNumber } from 'class-validator';
+import { IsString, IsOptional, IsNumber, MinLength, IsDate } from 'class-validator';
  
 class BookingDto {
 
@@ -7,7 +7,7 @@ class BookingDto {
     public bookingCode: string;
     
     @IsString()
-    public roomIds: string
+    public roomId: string
 
     @IsNumber()
     @IsOptional()
@@ -18,6 +18,22 @@ class BookingDto {
 
     @IsString()
     public userEmail: string
+
+    @IsString()
+    public userFullName: string
+
+    @IsString()
+    public numberOfPeople: Number
+
+    @IsDate()
+    public startDate: Date
+
+    @IsDate()
+    public endDate: Date
+    
 }
  
+
+ 
+
 export default BookingDto;
