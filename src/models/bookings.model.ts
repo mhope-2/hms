@@ -7,9 +7,9 @@ const BookingsSchema = new mongoose.Schema({
 
     bookingCode: { type: String, required: false, unique:false },
     
-    roomIds:{type: Schema.Types.ObjectId, ref: 'Rooms'},
+    roomIds:{type: String, required: true},
     
-    cost:{ type: Number, required: true},
+    cost:{ type: Number, required: false},
     
     userPhone: {type: String, required: true},
     

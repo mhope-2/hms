@@ -1,7 +1,7 @@
 
 interface BookingInterface {
     bookingCode?: String,
-    roomIds: string[],
+    roomIds: string,
     cost?: Number,
     userPhone: String,
     userEmail: String
