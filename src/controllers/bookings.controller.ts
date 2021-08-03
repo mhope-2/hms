@@ -23,7 +23,6 @@ class BookingsController implements Controller {
       this.router.get(`${this.path}/:id`, this.findBookingById);
       this.router.post(`${this.path}/add`, authMiddleware, validationMiddleware(BookingsDto), this.addBooking);
       this.router.patch(`${this.path}/update/:id`, authMiddleware, this.updateBookingById);
-      this.router.delete(`${this.path}/delete/:id`, authMiddleware, this.deleteBookingById);
     }
    
 
@@ -38,12 +37,13 @@ class BookingsController implements Controller {
     // add Booking
     private addBooking = async (req:express.Request, res:express.Response) => {
       const addBookingData : BookingsDto = req.body
-
-      // generate booking code
 1
 
       // add booking code to request body
       addBookingData.bookingCode = this.generateBookingCode(100000,900000)
+
+      // join on rooms
+      addBookingData
 
       const newBooking = new this.bookings(addBookingData)
       
@@ -83,20 +83,6 @@ class BookingsController implements Controller {
     }    
 
     )}
-
-
-    // Delete booking by id
-    private deleteBookingById = async (req:express.Request, res:express.Response, next:express.NextFunction) => {
-        const id = req.params.id
-        this.bookings.findByIdAndDelete(id)
-        .then(successResponse => {
-          if (successResponse) {
-              res.json({"Response":`Booking with id ${id} deleted successfully`});
-          } else {
-            next(new BookingNotFoundException(id));
-          }
-        })
-    }
 
 
     /**

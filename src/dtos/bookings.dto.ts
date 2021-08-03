@@ -15,6 +15,7 @@ class BookingDto {
     public roomIds: string[]
 
     @IsNumber()
+    @IsOptional()
     public cost: Number
 
     @IsString()
@@ -22,6 +23,9 @@ class BookingDto {
 
     @IsString()
     public userEmail: string
+
+
+      
 
 }
  

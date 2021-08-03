@@ -6,10 +6,12 @@ const RoomsSchema = new mongoose.Schema({
 
     roomNumber: { type: String, required: true, unique:true },
     floor: { type: String, required: true },
-    resourceIds:[
-        {type: Schema.Types.ObjectId, ref: 'RoomResources'},
+    resources:[
+        { type: Schema.Types.ObjectId, ref: 'RoomResources' },
     ],
-    price: { type: Number, required: true} // in ghc
+    price: { type: Number, required: true}, // in ghc.
+    status: { type: String, status: 'available' }
+    
 },
   {timestamps:true}
 )
