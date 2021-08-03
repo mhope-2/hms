@@ -2,8 +2,6 @@ import { IsString, IsOptional, IsNumber } from 'class-validator';
  
 class BookingDto {
 
-    public constructor(){}
-
     @IsString()
     @IsOptional()
     public bookingCode: string;
@@ -20,10 +18,6 @@ class BookingDto {
 
     @IsString()
     public userEmail: string
-
-
-      
-
 }
  
 export default BookingDto;
