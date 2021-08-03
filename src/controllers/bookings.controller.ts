@@ -37,19 +37,20 @@ class BookingsController implements Controller {
     // add Booking
     private addBooking = async (req:express.Request, res:express.Response) => {
       const addBookingData : BookingsDto = req.body
-1
 
       // add booking code to request body
-      addBookingData.bookingCode = this.generateBookingCode(100000,900000)
+      addBookingData.bookingCode = this.generateBookingCode(100000,900000)      
 
-      // join on rooms
-      addBookingData
+      // save 
+      for(let i = 0; i < req.body.length; i++){
+        const newBooking = new this.bookings(addBookingData)
 
-      const newBooking = new this.bookings(addBookingData)
-      
-      const saveNewBooking = await newBooking.save()
-      .then(() => res.json({"Response":`Booking ${addBookingData.bookingCode} added`}))
-      .catch(err => res.status(400).json('Error: ' + err));
+         addBookingData.roomIds = addBookingData.roomIds[i]
+
+          const saveNewBooking = await newBooking.save()
+          .then(() => res.json({"Response":`Booking ${addBookingData.bookingCode} added`}))
+          .catch(err => res.status(400).json('Error: ' + err));
+      }
   }
 
 

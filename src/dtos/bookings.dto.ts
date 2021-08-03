@@ -1,4 +1,4 @@
-import { IsString, IsOptional, IsNumber, MinLength } from 'class-validator';
+import { IsString, IsOptional, IsNumber } from 'class-validator';
  
 class BookingDto {
 
@@ -8,11 +8,8 @@ class BookingDto {
     @IsOptional()
     public bookingCode: string;
     
-    @MinLength(24, {
-        each: true,
-        message: 'roomId must be at least 24 characters',
-      })
-    public roomIds: string[]
+    @IsString()
+    public roomIds: string
 
     @IsNumber()
     @IsOptional()
