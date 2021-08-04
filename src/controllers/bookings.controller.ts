@@ -30,10 +30,16 @@ class BookingsController implements Controller {
    
 
     // list all Bookings
-    private bookingsList = async (req:express.Request, res:express.Response) => {
-        await this.bookings.find()
-        .then(bookings => res.json(bookings))
-        .catch(err => res.status(400).json('Error: ' + err)) 
+    private bookingsList = async (req:express.Request, res:express.Response, next:express.NextFunction) => {
+        // await this.bookings.find()
+        const booking = await this.bookings.find().populate('roomId')
+        .exec((err, booking) =>{
+          if (err){
+            next(new BookingNotFoundException(req.params.id))
+          }
+          if (booking)
+            res.json(booking)
+        })
     } 
 
    
