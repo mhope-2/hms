@@ -24,32 +24,36 @@ const transporter = nodemailer.createTransport(transport)
         console.log('Ready to send mail!')
 }
 })
-        
-const sendMail = (mailPayload: EmailDto) => {
-        
-    const mail = {
-        from: process.env.SMTP_FROM_EMAIL,
-        to: mailPayload.recipientEmail,
-        subject: `${mailPayload.subject}`,
-        text: `
-            from:
-            ${mailPayload.senderEmail}
-    
-            contact details
-            email: ${mailPayload.recipientEmail}
-            phone: ${mailPayload.recipientPhone}
-    
-            message:
-            ${mailPayload.mailContent}`,
-        }
+   
+let mailSetup = (mailPayload:EmailDto ) =>{
+const mail = {
+    from: process.env.SMTP_FROM_EMAIL,
+    to: mailPayload.recipientEmail,
+    subject: `${mailPayload.subject}`,
+    text: `
+        from:
+        ${mailPayload.senderEmail}
 
-        transporter.sendMail(mail, (err, data) => {
-            if (err) {
-                return 'failed';
-            } else {
-                return 'success'
-            }
-        })
+        contact details
+        email: ${mailPayload.recipientEmail}
+        phone: ${mailPayload.recipientPhone}
+
+        message:
+        ${mailPayload.mailContent}`,
+    }
+
+    return pushMail(mail)
+
+}
+    
+let pushMail = (mail) => {
+    transporter.sendMail(mail, (err, data) => {
+        if (err) {
+            return 'failed';
+        } 
+    })
+    return 'success'
 }
 
-export default sendMail
+
+export default mailSetup

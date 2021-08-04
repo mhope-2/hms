@@ -9,7 +9,7 @@ import BookingNotFoundException from '../exceptions/bookings/BookingNotFoundExce
 import BookingsDto from '../dtos/bookings.dto'
 import validationMiddleware from '../middleware/validation.middleware'
 import authMiddleware from '../middleware/auth.middleware';
-import sendMail from '../utils/email.utils'
+import mailSetup from '../utils/email.utils'
 import EmailDto from '../dtos/email.dto'
 
 class BookingsController implements Controller {
@@ -73,10 +73,14 @@ class BookingsController implements Controller {
                           Start Date: ${addBookingData.startDate}\n
                           End Date: ${addBookingData.endDate}` 
           }
-           sendMail(mailPayload)
-          res.json({"Response":`Booking ${addBookingData.bookingCode} added`})
+          const pushMail:string = mailSetup(mailPayload)
+          if (pushMail === 'success'){
+            res.json({"Response":`Booking ${addBookingData.bookingCode} added`})
+          }else{
+            res.status(400).json('Error Sending Mail: ' + err)
+          }
         })
-        .catch(err => res.status(400).json('Error: ' + err));
+        
         
           }
         })
