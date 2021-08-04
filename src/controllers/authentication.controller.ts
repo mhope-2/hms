@@ -101,7 +101,7 @@ class AuthenticationController implements Controller {
                 });
              });
             user.password = ''
-            res.setHeader('COokie', [this.setCookie(tokenData)])
+            res.setHeader('Cookie', [this.setCookie(tokenData)])
             res.json({"response": `user with username ${user.username} registered successfully`})
           }  
           else {
@@ -139,7 +139,7 @@ class AuthenticationController implements Controller {
            });
 
             user.password = ''
-            
+            res.setHeader('Cookie', [user.token])
             res.json(user)
           } else {
             next(new InvalidCredentialsException())

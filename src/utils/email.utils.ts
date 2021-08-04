@@ -27,8 +27,8 @@ const transporter = nodemailer.createTransport(transport)
    
 let mailSetup = (mailPayload:EmailDto ) =>{
 const mail = {
-    from: String(process.env.SMTP_FROM_EMAIL),
-    to: String(mailPayload.recipientEmail),
+    from: process.env.SMTP_FROM_EMAIL,
+    to: mailPayload.recipientEmail,
     subject: `${mailPayload.subject}`,
     text: `
         from:
