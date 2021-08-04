@@ -10,7 +10,7 @@ const transport = {
     
     auth: {
         user: process.env.SMTP_USER_EMAIL,
-        password: process.env.SMTP_USER_PASSWORD,
+        password: process.env.SMTP_USER_PASSWORD
     },
     }
     
@@ -27,8 +27,8 @@ const transporter = nodemailer.createTransport(transport)
    
 let mailSetup = (mailPayload:EmailDto ) =>{
 const mail = {
-    from: process.env.SMTP_FROM_EMAIL,
-    to: mailPayload.recipientEmail,
+    from: String(process.env.SMTP_FROM_EMAIL),
+    to: String(mailPayload.recipientEmail),
     subject: `${mailPayload.subject}`,
     text: `
         from:
@@ -49,6 +49,7 @@ const mail = {
 let pushMail = (mail) => {
     transporter.sendMail(mail, (err, data) => {
         if (err) {
+            console.log("Send Failed: ",err)
             return 'failed';
         } 
     })
