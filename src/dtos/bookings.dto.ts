@@ -22,7 +22,7 @@ class BookingDto {
     @IsString()
     public userFullName: string
 
-    @IsString()
+    @IsNumber()
     public numberOfPeople: Number
 
     @IsString()
