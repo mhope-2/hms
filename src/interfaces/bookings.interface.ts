@@ -7,8 +7,8 @@ interface BookingInterface {
     userEmail: String,
     userFullName: String,
     numberOfPeople: Number,
-    startDate: Date,
-    endDate: Date
+    startDate: String,
+    endDate: String
   }
 
 export default BookingInterface

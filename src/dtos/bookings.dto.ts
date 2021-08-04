@@ -25,11 +25,11 @@ class BookingDto {
     @IsString()
     public numberOfPeople: Number
 
-    @IsDate()
-    public startDate: Date
+    @IsString()
+    public startDate: String
 
-    @IsDate()
-    public endDate: Date
+    @IsString()
+    public endDate: String
     
 }
  
