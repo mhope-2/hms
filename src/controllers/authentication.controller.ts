@@ -118,7 +118,6 @@ class AuthenticationController implements Controller {
           const isPasswordMatching = await bcrypt.compare(logInData.password, user.password)
           .then((result)=>{
             if (result){
-              console.log("correct login password")
               return true
             }
           })
@@ -175,7 +174,7 @@ class AuthenticationController implements Controller {
 
       // create token
       public refreshToken(user): TokenData {
-        const expiresIn = Number(process.env.JWT_REFRESH_EXPIRES)
+        const expiresIn = Number(process.env.JWT_REFRESH_EXPIRES) || 60*60
         const secret = process.env.JWT_REFRESH_SECRET
         const dataStoredInToken: DataStoredInToken = {
           _id: user._id
