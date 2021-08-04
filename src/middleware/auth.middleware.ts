@@ -8,7 +8,7 @@ import RequestWithUser from '../interfaces/requestWithUser.interface';
 import UserModel from '../models/user.model';
 
 async function authMiddleware(request: RequestWithUser, response: Response, next: NextFunction) {
-  const cookies = request.cookies;
+  const cookies = request.cookies
   if (cookies && cookies.Authorization) {
     const secret = process.env.JWT_REFRESH_SECRET || '';
     try {

@@ -127,6 +127,8 @@ class AuthenticationController implements Controller {
           if (isPasswordMatching) {
 
           const tokenData = this.refreshToken(user)
+
+           
             // assign token to created user
             const token = this.setCookie(tokenData)
             this.user.findOne({_id: user._id}, function(err, user){
@@ -139,7 +141,7 @@ class AuthenticationController implements Controller {
            });
 
             user.password = ''
-            res.setHeader('Cookie', [user.token])
+            req.cookies('Cookie', [user.token])
             res.json(user)
           } else {
             next(new InvalidCredentialsException())
@@ -150,7 +152,7 @@ class AuthenticationController implements Controller {
       }
 
       public setCookie(tokenData: TokenData) {
-        return `Authorization=${tokenData.token}; Max-Age=${tokenData.expiresIn}`
+        return `Authorization=${tokenData.token}; HttpOnly; Max-Age=${tokenData.expiresIn}`
       }
 
       get getCookie(){
@@ -173,7 +175,7 @@ class AuthenticationController implements Controller {
 
       // create token
       public refreshToken(user): TokenData {
-        const expiresIn = Number(process.env.JWT_REFRESH_EXPIRES) || 60 * 60
+        const expiresIn = Number(process.env.JWT_REFRESH_EXPIRES)
         const secret = process.env.JWT_REFRESH_SECRET
         const dataStoredInToken: DataStoredInToken = {
           _id: user._id
