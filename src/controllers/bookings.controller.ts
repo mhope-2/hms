@@ -8,7 +8,7 @@ import BookingNotFoundException from '../exceptions/bookings/BookingNotFoundExce
 import BookingsDto from '../dtos/bookings.dto'
 import validationMiddleware from '../middleware/validation.middleware'
 import authMiddleware from '../middleware/auth.middleware';
-
+import sendMail from '../utils/email.utils'
 
 class BookingsController implements Controller {
     public path = '/bookings';
@@ -52,10 +52,26 @@ class BookingsController implements Controller {
           const newBooking = new this.bookings(addBookingData)
  
         const saveNewBooking = await newBooking.save()
-        .then(() => {
+        .then(async () => {
           //send mail 
           /** Further improvement: to be made a background process
            */
+          const mailPayload = {
+            senderEmail: process.env.SMTP_USER_EMAIL,
+            recipientEmail: req.body.userEmail, 
+            userFullName: req.body.userFullName
+            recipientPhone: req.body.userPhone,
+            subject: "INT HOTEL BOOKING DETAILS",
+            mailContent: `Hello ${req.body.userFullName}, \n
+            
+                          Your room booking with number ${addBookingData.bookingCode} has been placed sucessfully.\n
+                          Details:\n
+                          Room Number: ${room.roomNumber}\n
+                          Cost: ${addBookingData.cost}\n,
+                          Start Date: ${addBookingData.startDate}\n
+                          End Date: ${addBookingData.endDate}` 
+          }
+           sendMail(mailPayload)
           res.json({"Response":`Booking ${addBookingData.bookingCode} added`})
         })
         .catch(err => res.status(400).json('Error: ' + err));
@@ -104,7 +120,6 @@ class BookingsController implements Controller {
       }
       if (booking)
         res.json(booking)
-
     })
     
   }
