@@ -29,12 +29,13 @@ class BookingsController implements Controller {
         const id = req.params.id
         const updateBookingData: BookingInterface = req.body  
 
-        this.bookings.findOne({_id: id}, function(err, booking){
-            booking.status = 'approved';
+        this.bookings.findOne({_id: id}, (err, booking)=>{
+            
             booking.save((err) => {
               if (err) {
                 next(new BookingNotFoundException(id))
               } else{
+                booking.status = 'approved'
                 res.json({"Response":`Your booking with code ${booking.bookingCode} has been approved successfully. Kindly check your email for details`})
                 // send email
               }
@@ -51,12 +52,12 @@ class BookingsController implements Controller {
         const reasonForDecline = req.body.reasonForDecline  
 
         this.bookings.findOne({_id: id}, function(err, booking){
-            booking.status = 'declined';
             booking.save((err) => {
               if (err) {
                 next(new BookingNotFoundException(id))
               } else{
-                res.json({"Response":`Your booking with code ${booking.bookingCode} has declined. Kindly check your email for details`})
+                booking.status = 'declined';
+                res.json({"Response":`Your booking with code ${booking.bookingCode} has declined.\nReason: ${reasonForDecline}. Kindly check your email for details`})
                 // send email with reason
               }
             });
