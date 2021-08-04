@@ -10,7 +10,7 @@ const RoomsSchema = new mongoose.Schema({
         { type: String, required: true },
     ],
     price: { type: Number, required: true}, // in ghc.
-    status: { type: String, default: 'available' }
+    status: { type: String, default: 'available'}
     
 },
   {timestamps:true}
