@@ -141,7 +141,7 @@ class AuthenticationController implements Controller {
            });
 
             user.password = ''
-            req.cookies('Cookie', [user.token])
+            res.cookie('Cookie', [user.token])
             res.json(user)
           } else {
             next(new InvalidCredentialsException())
