@@ -1,6 +1,7 @@
 import express from 'express'
 import Controller from '../interfaces/controller.interface'
 import BookingInterface from '../interfaces/bookings.interface'
+import EmailInterface from '../interfaces/email.interface'
 import BookingModel from '../models/bookings.model'
 import RoomsModel from '../models/rooms.model'
 import HttpException from '../exceptions/http/HttpException'
@@ -9,6 +10,7 @@ import BookingsDto from '../dtos/bookings.dto'
 import validationMiddleware from '../middleware/validation.middleware'
 import authMiddleware from '../middleware/auth.middleware';
 import sendMail from '../utils/email.utils'
+import EmailDto from '../dtos/email.dto'
 
 class BookingsController implements Controller {
     public path = '/bookings';
@@ -56,7 +58,7 @@ class BookingsController implements Controller {
           //send mail 
           /** Further improvement: to be made a background process
            */
-          const mailPayload : BookingInterface = {
+          const mailPayload : EmailInterface = {
             senderEmail: String(process.env.SMTP_USER_EMAIL),
             recipientEmail: req.body.userEmail, 
             userFullName: req.body.userFullName,
