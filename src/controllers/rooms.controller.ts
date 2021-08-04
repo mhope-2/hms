@@ -29,7 +29,7 @@ class RoomsController implements Controller {
 
     // list all rooms
     private roomsList = async (req:express.Request, res:express.Response) => {
-        await this.room.find()
+        await this.room.find({'status':'available'}).exec()
         .then(rooms => res.json(rooms))
         .catch(err => res.status(400).json('Error: ' + err)) 
     } 

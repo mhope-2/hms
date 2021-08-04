@@ -29,18 +29,12 @@ class AdminController implements Controller {
         const id = req.params.id
         const updateBookingData: BookingInterface = req.body  
 
-        this.bookings.findOne({_id: id}, (err, booking)=>{
-            
-            booking.save((err) => {
-              if (err) {
-                next(new BookingNotFoundException(id))
-              } else{
-                booking.status = 'approved'
-                res.json({"Response":`Your booking with code ${booking.bookingCode} has been approved successfully. Kindly check your email for details`})
-                // send email
-              }
-            });
-         });
+        await this.bookings.updateOne({_id: id}, { status: 'approved' })
+        .then(()=>{
+          // update room status to taken
+          res.json({"Response":`Booking approved successfully.`})
+        })
+        .catch(err => res.json({"Response":"Attempt to approve booking failed"}))
     
         }
 
@@ -51,18 +45,12 @@ class AdminController implements Controller {
         const id = req.params.id
         const reasonForDecline = req.body.reasonForDecline  
 
-        this.bookings.findOne({_id: id}, function(err, booking){
-            booking.save((err) => {
-              if (err) {
-                next(new BookingNotFoundException(id))
-              } else{
-                booking.status = 'declined';
-                res.json({"Response":`Your booking with code ${booking.bookingCode} has declined.\nReason: ${reasonForDecline}. Kindly check your email for details`})
-                // send email with reason
-              }
-            });
-         });
-    
+        await this.bookings.updateOne({_id: id}, { status: 'declined' })
+        .then(()=>{
+          res.json({"Response":`Booking declined successfully with reason: ${reasonForDecline}.`})
+        })
+        .catch(err => res.json({"Response":"Attempt to decline booking failed"}))
+  
         }
 
 
