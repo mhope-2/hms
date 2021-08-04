@@ -56,10 +56,10 @@ class BookingsController implements Controller {
           //send mail 
           /** Further improvement: to be made a background process
            */
-          const mailPayload = {
-            senderEmail: process.env.SMTP_USER_EMAIL,
+          const mailPayload : BookingInterface = {
+            senderEmail: String(process.env.SMTP_USER_EMAIL),
             recipientEmail: req.body.userEmail, 
-            userFullName: req.body.userFullName
+            userFullName: req.body.userFullName,
             recipientPhone: req.body.userPhone,
             subject: "INT HOTEL BOOKING DETAILS",
             mailContent: `Hello ${req.body.userFullName}, \n
