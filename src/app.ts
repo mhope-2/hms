@@ -29,6 +29,7 @@ class App {
  
   // init middleware
   private initializeMiddleware() {
+    this.app.use(cors({ origin: true, credentials: true }))
     this.app.use(express.json())
     this.app.use(cookieParser())
     this.app.use(express.static('public/post_images'))
