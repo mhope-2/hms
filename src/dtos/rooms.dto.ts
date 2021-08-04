@@ -7,11 +7,11 @@ class RoomsDto {
   @IsString()
   public floor: string
 
-  @MinLength(24, {
+  @MinLength(1, {
     each: true,
-    message: 'resourceId must be at least 24 characters',
+    message: 'resources must be at least 24 characters',
   })
-  public resourceIds: string
+  public resources: string[]
 
   @IsNumber()
   public price: Number
