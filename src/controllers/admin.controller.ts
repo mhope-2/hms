@@ -6,7 +6,7 @@ import BookingNotFoundException from '../exceptions/bookings/BookingNotFoundExce
 import authMiddleware from '../middleware/auth.middleware';
 
 
-class BookingsController implements Controller {
+class AdminController implements Controller {
     public path = '/bookings';
     public router = express.Router();
     private bookings = BookingModel;
@@ -69,4 +69,4 @@ class BookingsController implements Controller {
   // class end
   }
 
-export default BookingsController
+export default AdminController

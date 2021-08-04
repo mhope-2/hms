@@ -7,6 +7,7 @@ import RoomsController from './controllers/rooms.controller'
 import RoomResourcesController from './controllers/roomResources.controller'
 import BookingsController from './controllers/bookings.controller'
 import RolesController from './controllers/roles.controller'
+import AdminController from './controllers/admin.controller'
 
 // get env variables
 dotenv.config({
@@ -23,7 +24,8 @@ const app = new App(
     new RoomsController(),
     new RoomResourcesController(),
     new BookingsController(),
-    new RolesController()
+    new RolesController(),
+    new AdminController()
   ],
 );
 
