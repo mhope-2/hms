@@ -39,7 +39,7 @@
     "mongoose": "^6.13.6",
     "morgan": "^1.10.0",
     "multer": "^2.1.1",
-    "nodemailer": "^8.0.10",
+    "nodemailer": "^9.0.1",
     "nodemon": "^3.1.14",
     "promisify": "0.0.3",
     "ts-jest": "^29.4.6",
