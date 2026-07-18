@@ -1,58 +1,80 @@
-// Prevent real DB connections - we only test the controller's pure helper methods
-jest.mock('../../src/models/user.model', () => ({
-  __esModule: true,
-  default: { findOne: jest.fn(), findById: jest.fn(), create: jest.fn() },
-}));
-
+import express from 'express';
+import request from 'supertest';
 import AuthenticationController from '../../src/controllers/authentication.controller';
+import InvalidCredentialsException from '../../src/exceptions/auth/InvalidCredentialsException';
+import PasswordMismatchException from '../../src/exceptions/auth/PasswordMismatchException';
 
-describe('AuthenticationController', () => {
-  let controller: AuthenticationController;
+const mockService = {
+  listUsers: jest.fn(),
+  getUserById: jest.fn(),
+  register: jest.fn(),
+  login: jest.fn(),
+};
 
-  beforeAll(() => {
-    process.env.JWT_SECRET = 'test-jwt-secret';
-    process.env.JWT_EXPIRES = '3600';
-    process.env.JWT_REFRESH_SECRET = 'test-refresh-secret';
-    process.env.JWT_REFRESH_EXPIRES = '7200';
-    controller = new AuthenticationController();
+function buildApp() {
+  const app = express();
+  app.use(express.json());
+  app.use('/api', new AuthenticationController(mockService as any).router);
+  app.use((err: any, _req: any, res: any, _next: any) => {
+    res.status(err.status || 500).json({ status: err.status || 500, message: err.message });
+  });
+  return app;
+}
+
+const app = buildApp();
+
+const registerBody = {
+  firstName: 'A', lastName: 'B', email: 'a@b.com', phone: '+233000000',
+  username: 'ab', password: 'secret1', password2: 'secret1',
+};
+
+describe('Authentication routes', () => {
+  beforeEach(() => jest.clearAllMocks());
+
+  it('GET /api/auth/users returns 200 with users', async () => {
+    mockService.listUsers.mockResolvedValue([{ _id: 'u1', username: 'ab' }]);
+    const res = await request(app).get('/api/auth/users');
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual([{ _id: 'u1', username: 'ab' }]);
   });
 
-  describe('createToken', () => {
-    it('returns a token string and numeric expiresIn', () => {
-      const tokenData = controller.createToken({ _id: 'user-1' });
-      expect(typeof tokenData.token).toBe('string');
-      expect(tokenData.token.length).toBeGreaterThan(0);
-      expect(tokenData.expiresIn).toBe(3600);
+  it('POST /api/auth/user/register sets the auth cookie via Set-Cookie and returns 200', async () => {
+    mockService.register.mockResolvedValue({
+      user: { _id: 'u1', username: 'ab', password: '' },
+      cookie: 'Authorization=jwt-token; HttpOnly; Max-Age=3600',
     });
-
-    it('defaults expiresIn to 3600 when JWT_EXPIRES is unset', () => {
-      delete process.env.JWT_EXPIRES;
-      const tokenData = controller.createToken({ _id: 'user-1' });
-      expect(tokenData.expiresIn).toBe(3600);
-      process.env.JWT_EXPIRES = '3600';
-    });
+    const res = await request(app).post('/api/auth/user/register').send(registerBody);
+    expect(res.status).toBe(200);
+    expect(res.headers['set-cookie'][0]).toContain('Authorization=jwt-token');
+    expect(res.body.response).toContain('ab');
   });
 
-  describe('refreshToken', () => {
-    it('returns a refresh token string and numeric expiresIn', () => {
-      const tokenData = controller.refreshToken({ _id: 'user-2' });
-      expect(typeof tokenData.token).toBe('string');
-      expect(tokenData.token.length).toBeGreaterThan(0);
-      expect(tokenData.expiresIn).toBe(7200);
-    });
-
-    it('defaults expiresIn to 3600 when JWT_REFRESH_EXPIRES is unset', () => {
-      delete process.env.JWT_REFRESH_EXPIRES;
-      const tokenData = controller.refreshToken({ _id: 'user-2' });
-      expect(tokenData.expiresIn).toBe(3600);
-      process.env.JWT_REFRESH_EXPIRES = '7200';
-    });
+  it('POST /api/auth/user/register returns 401 on password mismatch', async () => {
+    mockService.register.mockRejectedValue(new PasswordMismatchException());
+    const res = await request(app).post('/api/auth/user/register').send({ ...registerBody, password2: 'x' });
+    expect(res.status).toBe(401);
   });
 
-  describe('setCookie', () => {
-    it('formats the Authorization cookie correctly', () => {
-      const cookie = controller.setCookie({ expiresIn: 3600, token: 'abc.def.ghi' });
-      expect(cookie).toBe('Authorization=abc.def.ghi; HttpOnly; Max-Age=3600');
+  it('POST /api/auth/user/login returns the user and sets the auth cookie', async () => {
+    mockService.login.mockResolvedValue({
+      user: { _id: 'u1', username: 'ab', password: '' },
+      cookie: 'Authorization=jwt-token; HttpOnly; Max-Age=3600',
     });
+    const res = await request(app).post('/api/auth/user/login').send({ username: 'ab', password: 'secret1' });
+    expect(res.status).toBe(200);
+    expect(res.headers['set-cookie'][0]).toContain('Authorization=jwt-token');
+    expect(res.body.username).toBe('ab');
+  });
+
+  it('POST /api/auth/user/login returns 401 for bad credentials', async () => {
+    mockService.login.mockRejectedValue(new InvalidCredentialsException());
+    const res = await request(app).post('/api/auth/user/login').send({ username: 'ab', password: 'wrong' });
+    expect(res.status).toBe(401);
+  });
+
+  it('POST /api/auth/user/logout clears the Authorization cookie', async () => {
+    const res = await request(app).post('/api/auth/user/logout');
+    expect(res.status).toBe(200);
+    expect(res.headers['set-cookie'][0]).toContain('Authorization=;Max-age=0');
   });
 });

@@ -55,18 +55,15 @@ class App {
 
     
   // connect to database
-  private connectDB = async ()=>{
-    const connect = await mongoose.connect(process.env.ATLAS_URI,{
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        useCreateIndex: true
-    }).then(()=>{
-        console.log(`MongoDB database connection established successfully`);
-    }).catch((error)=>{
-        console.log("MongoDB not connected");
-        console.log(error);
-    });
-}
+  private connectDB = async () => {
+    try {
+      await mongoose.connect(process.env.ATLAS_URI)
+      console.log(`MongoDB database connection established successfully`)
+    } catch (error) {
+      console.log("MongoDB not connected")
+      console.log(error)
+    }
+  }
 }
  
 export default App;

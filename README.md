@@ -19,4 +19,14 @@
 ## To run tests
 
 - Run `yarn test` or `npm test` in this directory.
-PS: current files in tests directory are sample tests, still working on the tests for relevant components
+
+## Architecture
+
+The API follows a controller → service → repository layering:
+
+- `src/controllers/` — HTTP only: parse the request, call a service, send the response. Errors are passed to `next(err)` and rendered by `src/middleware/error.middleware.ts`.
+- `src/services/` — business rules. Throw `HttpException` subclasses from `src/exceptions/` for domain errors.
+- `src/repositories/` — the only layer that touches Mongoose, via the generic `BaseRepository`.
+
+Dependencies are wired with constructor default parameters, so tests inject plain jest mocks:
+`new RoomsController(mockService)`, `new RoomsService(mockRepository)`.
