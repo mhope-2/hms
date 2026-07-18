@@ -1,197 +1,72 @@
-import * as bcrypt from 'bcrypt'
 import * as express from 'express'
-import UserWithThatEmailAlreadyExistsException from '../exceptions/auth/UserWithThatEmailAlreadyExistsException'
-import InvalidCredentialsException from '../exceptions/auth/InvalidCredentialsException'
-import PasswordMismatchException from '../exceptions/auth/PasswordMismatchException'
-import InvalidPasswordLengthException from '../exceptions/auth/InvalidPasswordLengthException'
-import UserNotFoundException from '../exceptions/auth/UserNotFoundException'
-import UserWithThatUsernameAlreadyExistsException from '../exceptions/auth/UserWithThatUsernameAlreadyExistsException'
 import Controller from '../interfaces/controller.interface'
+import AuthenticationService from '../services/authentication.service'
 import validationMiddleware from '../middleware/validation.middleware'
 import CreateUserDto from '../dtos/user.dto'
-import UserModel from '../models/user.model'
-import LogInDto from '../login/login.dto'
-import TokenData from '../interfaces/tokenData.interface'
-import DataStoredInToken from '../interfaces/dataStoredInToken.interface'
-import { truncate } from 'node:fs'
-const jwt = require('jsonwebtoken')
+import LogInDto from '../dtos/login.dto'
 
 class AuthenticationController implements Controller {
 
     public path = '/auth'
     public router = express.Router()
-    private user = UserModel
 
-    constructor() {
+    constructor(private readonly authService = new AuthenticationService()) {
         this.initializeRoutes()
-      }
-    
-    private initializeRoutes() {
+    }
 
+    private initializeRoutes() {
         this.router.get(`${this.path}/users`, this.userList)
         this.router.get(`${this.path}/:id`, this.findUserById)
         this.router.post(`${this.path}/user/register`, validationMiddleware(CreateUserDto), this.registration)
         this.router.post(`${this.path}/user/login`, validationMiddleware(LogInDto), this.loggingIn)
         this.router.post(`${this.path}/user/logout`, this.loggingOut);
+    }
 
+    // get all users
+    private userList = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+      try {
+        res.json(await this.authService.listUsers())
+      } catch (err) {
+        next(err)
       }
+    }
 
-
-    // get all users  
-    private userList = async (req, res) => {
-        await this.user.find()
-          .then(users => {
-              res.json(users)
-          }) 
-          .catch(err => res.status(400).json('Error: ' + err))
-    } 
-
-    // Get Exercise Info by Id
-  private findUserById = async (req:express.Request, res:express.Response, next:express.NextFunction) => {
-
-    this.user.findById(req.params.id)
-    .then(user => {
-      if (user)
-        res.json(user)
-      else {
-        next(new UserNotFoundException(404))
+    // Get user Info by Id
+    private findUserById = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+      try {
+        res.json(await this.authService.getUserById(req.params.id))
+      } catch (err) {
+        next(err)
       }
-    })
-  }
+    }
 
-    // registration middleware
+    // registration
     private registration = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
-        const userData: CreateUserDto = req.body
-        
-        const passwordsMatch = userData.password === userData.password2 ? true : false
-        
-        if (passwordsMatch) {
-
-            if(userData.password.length < 6){
-              next(new InvalidPasswordLengthException())
-            }
-
-            if(req.body.password != req.body.password2){
-              next(new PasswordMismatchException())
-            }
-
-            if ( await this.user.findOne({ email: userData.email }) ) {
-              next(new UserWithThatEmailAlreadyExistsException(userData.email))
-            } 
-
-            if ( await this.user.findOne({ username: userData.username }) ) {
-              next(new UserWithThatUsernameAlreadyExistsException(userData.username))
-            } 
-
-            // create user
-            const hashedPassword = await bcrypt.hash(userData.password, 10)
-            const user = await this.user.create({
-              ...userData,
-              password: hashedPassword,
-            })
-            const tokenData = this.createToken(user)
-              // assign token to created user
-              const token = this.setCookie(tokenData)
-              this.user.findOne({_id: user._id}, function(err, user){
-                user.token = token;
-                user.save((err) => {
-                  if (err) {
-                    console.log(err)
-                  }
-                });
-             });
-            user.password = ''
-            res.setHeader('Cookie', [this.setCookie(tokenData)])
-            res.json({"response": `user with username ${user.username} registered successfully`})
-          }  
-          else {
-            next(new PasswordMismatchException())
-          }                      
-      } 
-
-
-      // login middleware
-      private loggingIn = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
-        const logInData: LogInDto = req.body
-        const user = await this.user.findOne({ username: logInData.username }).select("+password");
-        if (user) {
-          const isPasswordMatching = await bcrypt.compare(logInData.password, user.password)
-          .then((result)=>{
-            if (result){
-              return true
-            }
-          })
-          .catch(err =>console.error("LOGIN ERROR: ", err))
-          
-          if (isPasswordMatching) {
-
-          const tokenData = this.refreshToken(user)
-
-           
-            // assign token to created user
-            const token = this.setCookie(tokenData)
-            this.user.findOne({_id: user._id}, function(err, user){
-              user.token = token;
-              user.save((err) => {
-                if (err) {
-                  console.log(err)
-                }
-              });
-           });
-
-            user.password = ''
-            res.cookie('Cookie', [user.token])
-            res.json(user)
-          } else {
-            next(new InvalidCredentialsException())
-          }
-        } else {
-          next(new InvalidCredentialsException())
-        }
+      try {
+        const { user, cookie } = await this.authService.register(req.body)
+        res.setHeader('Set-Cookie', [cookie])
+        res.json({ "response": `user with username ${user.username} registered successfully` })
+      } catch (err) {
+        next(err)
       }
+    }
 
-      public setCookie(tokenData: TokenData) {
-        return `Authorization=${tokenData.token}; HttpOnly; Max-Age=${tokenData.expiresIn}`
+    // login
+    private loggingIn = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+      try {
+        const { user, cookie } = await this.authService.login(req.body)
+        res.setHeader('Set-Cookie', [cookie])
+        res.json(user)
+      } catch (err) {
+        next(err)
       }
+    }
 
-      get getCookie(){
-        return this.setCookie
-      }
-
-    // create token
-      public createToken(user): TokenData {
-        const expiresIn = Number(process.env.JWT_EXPIRES) || 60 * 60
-        const secret = process.env.JWT_SECRET
-        const dataStoredInToken: DataStoredInToken = {
-          _id: user._id
-        }
-        return {
-          expiresIn,
-          token: jwt.sign(dataStoredInToken, secret, { expiresIn }),
-        }
-      }
-
-
-      // create token
-      public refreshToken(user): TokenData {
-        const expiresIn = Number(process.env.JWT_REFRESH_EXPIRES) || 60*60
-        const secret = process.env.JWT_REFRESH_SECRET
-        const dataStoredInToken: DataStoredInToken = {
-          _id: user._id
-        }
-        return {
-          expiresIn,
-          token: jwt.sign(dataStoredInToken, secret, { expiresIn }),
-        }
-      }
-
-
-      // logout
-      private loggingOut = (req: express.Request, res: express.Response) => {
-        res.setHeader('Cookie', ['Authorization=;Max-age=0']);
-        res.json({"response": "logged out successfully"});
-      }
-
-}    
+    // logout
+    private loggingOut = (req: express.Request, res: express.Response) => {
+      res.setHeader('Set-Cookie', ['Authorization=;Max-age=0']);
+      res.json({ "response": "logged out successfully" });
+    }
+}
 
 export default AuthenticationController
