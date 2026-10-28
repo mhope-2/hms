@@ -55,6 +55,7 @@
     "@types/jest": "^29.5.14",
     "@types/supertest": "^7.2.1",
     "babel-jest": "^29.7.0",
+    "deepmerge": "file:./vendor/deepmerge",
     "supertest": "^7.3.1"
   },
   "engines": {
