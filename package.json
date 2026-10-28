@@ -49,7 +49,7 @@
     "validator": "^13.15.35"
   },
   "devDependencies": {
-    "@babel/core": "^7.29.7",
+    "@babel/core": "^8.0.9",
     "@babel/preset-env": "^7.29.7",
     "@babel/preset-typescript": "^7.29.7",
     "@types/jest": "^29.5.14",
