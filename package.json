@@ -29,7 +29,7 @@
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",
     "dotenv": "^8.6.0",
-    "ejs": "^3.1.10",
+    "ejs": "^7.0.2",
     "envalid": "^7.3.1",
     "express": "^4.22.3",
     "express-formidable": "^1.2.0",
