@@ -14,7 +14,7 @@
     "test": "jest --coverage"
   },
   "dependencies": {
-    "@types/bcrypt": "^3.0.1",
+    "@types/bcrypt": "^6.0.0",
     "@types/cookie-parser": "^1.4.10",
     "@types/express": "^4.17.25",
     "@types/express-session": "^1.19.0",
