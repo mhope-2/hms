@@ -1,5 +1,5 @@
 const sendMailMock = jest.fn();
-const createTransportMock = jest.fn(() => ({ sendMail: sendMailMock }));
+const createTransportMock = jest.fn((_config: any) => ({ sendMail: sendMailMock }));
 jest.mock('nodemailer', () => ({ createTransport: (config: any) => createTransportMock(config) }));
 
 import EmailService from '../../src/services/email.service';

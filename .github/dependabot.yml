@@ -1,0 +1,14 @@
+version: 2
+
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: daily
+      time: "03:15"
+      timezone: Europe/Amsterdam
+    open-pull-requests-limit: 20
+    versioning-strategy: increase
+    labels:
+      - dependencies
+      - security
